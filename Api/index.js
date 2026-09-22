@@ -15,7 +15,7 @@ const PORT = 3036;
 // Mensagem de inicio do servidor
 app.listen(PORT, () => {
     try{
-        console.log(`Servidor rodando! : http://localhost:${PORT}/chamados`);
+        console.log(`Servidor rodando! : http://localhost:${PORT}`);
     }catch(err){
         console.log(err);
     }
