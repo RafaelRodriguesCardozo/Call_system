@@ -36,43 +36,50 @@ function RegisterPage(){
     }
 
     return(
-        <div className="container">
-            <form onSubmit={handleSubmit} className="mb-3">
-
-                <div className="mt-3">
-                    <label htmlFor="nome" className="form-label">Nome de Usuário</label>
-                    <input
-                        className="form-control"
-                        type="text" 
-                        id="nome" 
-                        placeholder="ex: usuario1"
-                        value={inputUser}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputUser(e.target.value)}    
-                    />
+        <div className="container mt-5">
+            <form onSubmit={handleSubmit}>
+                <div className="row g-3 mb-3 d-flex justify-content-center">
+                    <div className="form-floating col-sm-5">
+                        <input
+                            className="form-control form-control-sm"
+                            type="text" 
+                            id="nome" 
+                            placeholder="ex: usuario1"
+                            value={inputUser}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputUser(e.target.value)}    
+                        />
+                        <label htmlFor="nome">Nome de Usuário</label>
+                    </div>
                 </div>
-                <div className="mt-3">
-                    <label htmlFor="email" className="form-label">Email</label>
-                    <input
-                        className="form-control"
-                        type="text" 
-                        id="email" 
-                        placeholder="ex: 123@gmail.com"
-                        value={inputEmailUser}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
-                    />
+                <div className="row g-3 mb-3 d-flex justify-content-center">
+                    <div className="form-floating col-sm-5">
+                        <input
+                            className="form-control form-control-sm"
+                            type="email" 
+                            id="email" 
+                            placeholder="ex: 123@gmail.com"
+                            value={inputEmailUser}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
+                        />
+                        <label htmlFor="email">Email</label>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="senha" className="">Senha</label>
-                    <input
-                        className="form-control"
-                        type="password"
-                        id="senha"
-                        placeholder="ex: 12345"
-                        value={inputSenha}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
-                     />
+                <div className="row g-3 mb-3 d-flex justify-content-center">
+                    <div className="form-floating col-sm-5">
+                        <input
+                            className="form-control form-control-sm"
+                            type="password"
+                            id="senha"
+                            placeholder="ex: 12345"
+                            value={inputSenha}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
+                        />
+                        <label htmlFor="senha" className="float">Senha</label>
+                    </div>
                 </div>
-                <button type="submit" className="btn btn-primary">entrar</button>
+                <div className="row g-3 d-flex justify-content-center">
+                    <button type="submit" className="btn btn-primary col-sm-3">Criar usuário</button>
+                </div>
             </form>
 
         </div>

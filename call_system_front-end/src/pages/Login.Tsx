@@ -1,6 +1,10 @@
 import { useState} from "react";
 
-function LoginPage(){
+interface LoginPageProps {
+    onLoginSuccess: (usuario: any) => void;
+}
+
+function LoginPage({onLoginSuccess}: LoginPageProps){
 
     const [inputEmailUser, setInputEmailUser] = useState('');
     const [inputSenha, setInputSenha] = useState('');
@@ -24,6 +28,7 @@ function LoginPage(){
             if(response.ok){
                 alert(data.mensagem || `Login bem sucedido!.`);
                 console.log(data);
+                onLoginSuccess(data.usuario);
             }else{
                 alert(data.Erro || `Ocorreu um erro ao realizar o login.`);
             }
@@ -34,33 +39,38 @@ function LoginPage(){
     }
 
     return(
-        <div className="container">
-            <form onSubmit={handleSubmit} className="mb-3">
-                <div className="mt-3">
-                    <label htmlFor="email" className="form-label">Email</label>
-                    <input
-                        className="form-control"
-                        type="text" 
-                        id="email" 
-                        placeholder="ex: 123@gmail.com"
-                        value={inputEmailUser}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
-                    />
+        <div className="container mt-5">
+            <form onSubmit={handleSubmit}>
+                <div className="row g-3 mb-3 d-flex justify-content-center">
+                    <div className="form-floating col-sm-5">
+                        <input
+                            className="form-control"
+                            type="text"
+                            id="email" 
+                            placeholder="ex: 123@gmail.com"
+                            value={inputEmailUser}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
+                        />
+                        <label htmlFor="email">Email</label>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="senha" className="">Senha</label>
-                    <input
-                        className="form-control"
-                        type="password"
-                        id="senha"
-                        placeholder="ex: 12345"
-                        value={inputSenha}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
-                     />
+                <div className="row g-3 mb-3 d-flex justify-content-center">
+                    <div className="form-floating col-sm-5">
+                        <input
+                            className="form-control"
+                            type="password"
+                            id="senha"
+                            placeholder="ex: 12345"
+                            value={inputSenha}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
+                        />
+                        <label htmlFor="senha">Senha</label>
+                    </div>
                 </div>
-                <button type="submit" className="btn btn-primary">entrar</button>
+                <div className="row g-3 d-flex justify-content-center mb-3">
+                    <button type="submit" className="btn btn-primary col-sm-3">entrar</button>
+                </div>
             </form>
-
         </div>
     )
 }
