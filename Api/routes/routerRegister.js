@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 // get, post, put e delete
 
-router.get('/user', (req,res) => {
+router.get('/regster', (req,res) => {
 
     const sql = 'SELECT * FROM USERS'
 
@@ -26,7 +26,7 @@ router.get('/user', (req,res) => {
     });
 });
 
-router.post('/user', async (req, res) => {
+router.post('/register', async (req, res) => {
     const {usernome, useremail, userpassword_hash} = req.body;
 
     // Verificação de campos
@@ -61,7 +61,7 @@ router.post('/user', async (req, res) => {
 
 });
 
-router.put('/user/:id', async (req,res) =>{
+router.put('/register/:id', async (req,res) =>{
     const {id} = req.params;
     const {usernome, useremail, userpassword_hash} = req.body;
 
@@ -95,7 +95,7 @@ router.put('/user/:id', async (req,res) =>{
     }
 });
 
-router.delete('/user/:id', (req,res) => {
+router.delete('/register/:id', (req,res) => {
     const{id} = req.params;
 
     const sql = `DELETE FROM USERS WHERE USERID = ?`;
