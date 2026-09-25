@@ -1,6 +1,7 @@
 import type React from "react";
 import { useState } from "react";
 
+// Declara que o userId espera um número ao invés de uma string na prop.
 interface criarChamadoProps {
     userId: number;
 }
@@ -11,6 +12,7 @@ function CriarChamado({userId}: criarChamadoProps) {
     const[inputDescricao, setInputDescricao] = useState('');
     const[inputPrioridade, setInputPrioridade] = useState('MÉDIA');
 
+    // Busca a rota de Post no back-end para criar um ticket
     const criarTicket = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
@@ -38,35 +40,44 @@ function CriarChamado({userId}: criarChamadoProps) {
         }
     }
 
-
     return(
-        <div className="m-4">
-            <form onSubmit={criarTicket}>
-                <div className="row g-3">
-                    <div className=" col-sm-5 mb-3">
+        <div className="m-4 container">
+            <title>Criar Chamados</title>
+            <div className="w-100 text-center mb-5">
+                <h1>Criar chamados</h1>
+                <p>crie um ticket para relatar seu problemalogo em seguida ele será visto e solucionado por um técnico</p>
+
+            </div>
+
+            <form onSubmit={criarTicket} className="d-flex flex-column justify-content-center">
+                <div className="w-100 mb-3">
+                    <div>
+                        <label htmlFor="titulo" className="form-label fw-bolder">Insira o Título</label>
                         <input 
                             type="text"
                             className="form-control"
-                            placeholder="Insira o titulo do chamado"
+                            placeholder="Insira o titulo do chamado..."
+                            id="titulo"
                             value={inputTitulo}
                             onChange={(e) => setInputTitulo(e.target.value)}    
                         />
                     </div>
                 </div>
-                <div className="row g-3">
-                    <div className=" col-sm-5 mb-3">
-                        <input 
-                            type="text"
+                <div className="w-100 mb-3">
+                    <div>
+                        <label htmlFor="descricao" className="form-label fw-bolder">Insira a descrição do chamado</label>
+                        <textarea 
                             className="form-control"
-                            placeholder="Insira a descrição do chamado"
+                            placeholder="Descrição do chamado..."
+                            id="descricao"
                             value={inputDescricao}
                             onChange={(e) => setInputDescricao(e.target.value)}
                         />
                     </div>                 
                 </div>
-                <div className="row g-3">
-                    <div  className=" col-sm-5">
-                        <label htmlFor="prioridade" className="form-label">Selecione a prioridade</label>
+                <div className="w-100 mb-3">
+                    <div>
+                        <label htmlFor="prioridade" className="form-label fw-bolder">Selecione a prioridade</label>
                         <select 
                             className="form-select mb-3" 
                             id="prioridade"
@@ -79,7 +90,6 @@ function CriarChamado({userId}: criarChamadoProps) {
                         </select>
                     </div>
                 </div>
-
 
                 <button type="submit" className="btn btn-primary">Criar chamado</button>
             </form>

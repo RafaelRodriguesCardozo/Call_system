@@ -40,6 +40,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
     return(
         <div className="container mt-5">
+            <title>login</title>
             <form onSubmit={handleSubmit}>
                 <div className="row g-3 mb-3 d-flex justify-content-center">
                     <div className="form-floating col-sm-5">

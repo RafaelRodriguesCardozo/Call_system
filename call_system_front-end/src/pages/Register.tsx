@@ -11,7 +11,7 @@ function RegisterPage(){
 
         try{
             
-            const response = await fetch('http://localhost:3036/user', {
+            const response = await fetch('http://localhost:3036/register', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({
@@ -37,6 +37,7 @@ function RegisterPage(){
 
     return(
         <div className="container mt-5">
+            <title>registrar-se</title>
             <form onSubmit={handleSubmit}>
                 <div className="row g-3 mb-3 d-flex justify-content-center">
                     <div className="form-floating col-sm-5">
