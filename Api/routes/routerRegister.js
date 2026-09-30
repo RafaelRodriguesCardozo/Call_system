@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 // get, post, put e delete
 
-router.get('/regster', (req,res) => {
+router.get('/register', (req,res) => {
 
     const sql = 'SELECT * FROM USERS'
 

@@ -10,7 +10,7 @@ function RegisterPage(){
         e.preventDefault();
 
         try{
-            
+
             const response = await fetch('http://localhost:3036/register', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
@@ -19,6 +19,7 @@ function RegisterPage(){
                     useremail : inputEmailUser,
                     userpassword_hash : inputSenha
                 })
+
             });
 
             const data = await response.json()

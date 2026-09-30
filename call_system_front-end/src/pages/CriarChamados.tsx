@@ -11,12 +11,15 @@ function CriarChamado({userId}: criarChamadoProps) {
     const[inputTitulo, setInputTitulo] = useState('');
     const[inputDescricao, setInputDescricao] = useState('');
     const[inputPrioridade, setInputPrioridade] = useState('MÉDIA');
+    const[Erro, setErro] = useState('');
 
     // Busca a rota de Post no back-end para criar um ticket
     const criarTicket = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
-        try{
+        setErro('');
+
+        try{ 
             const response = await fetch('http://localhost:3036/tickets', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
@@ -27,6 +30,10 @@ function CriarChamado({userId}: criarChamadoProps) {
                     prioridade : inputPrioridade
                 })
             });
+
+            if(!inputTitulo || !inputDescricao || !inputPrioridade ){
+                setErro('Todas as áreas tem que ser preenchidas');
+            }
 
             const data = await response.json();
             
@@ -52,6 +59,7 @@ function CriarChamado({userId}: criarChamadoProps) {
             <form onSubmit={criarTicket} className="d-flex flex-column justify-content-center">
                 <div className="w-100 mb-3">
                     <div>
+                        {Erro && <div className="alert alert-danger">{Erro}</div>}
                         <label htmlFor="titulo" className="form-label fw-bolder">Insira o Título</label>
                         <input 
                             type="text"

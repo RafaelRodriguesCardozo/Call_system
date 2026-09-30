@@ -13,6 +13,20 @@ function ConsultarChamado() {
     const [listaChamados, setListaChamados] = useState<Ticket[]>([]);
     const [erro, setErro] = useState('');
 
+    const classePrioridade = (prioridade: string) => {
+        switch (prioridade.trim().toLowerCase()) {
+            case 'baixa':
+                return 'bg-success';
+            case 'media':
+            case 'média':
+                return 'bg-warning text-dark';
+            case 'alta':
+                return 'bg-danger';
+            default:
+                return 'bg-secondary';
+        }
+    };
+
         
     const deletarTicket = async (id: number) => {
         if (!window.confirm(`Deseja realmente deletar o chamado #${id}?`)) {
@@ -81,15 +95,13 @@ function ConsultarChamado() {
                             <div className="d-flex justify-content-between align-items-center">
                                 <h5 className="mb-1 text-primary">{ticket.TITLE}</h5>
                                 <div className="d-flex gap-2 align-items-center">
-                                    <small className="badge bg-secondary">Prioridade: {ticket.PRIORIDADE}</small>
+                                    <small className={`badge ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</small>
                                     <small className="badge bg-secondary">Status: {ticket.STATUS}</small>
                                     {/* Botão de deletar individual para cada chamado */}
                                     <button 
                                         onClick={() => deletarTicket(ticket.TICKETID)} 
-                                        className="btn btn-danger btn-sm"
-                                    >
-                                        Excluir
-                                    </button>
+                                        className="btn btn-danger btn-sm rounded"
+                                    >Excluir</button>
                                 </div>
                             </div>
 

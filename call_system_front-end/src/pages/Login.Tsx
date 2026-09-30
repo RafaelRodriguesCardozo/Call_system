@@ -24,6 +24,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
             });
 
             const data = await response.json()
+            console.log("dados do login: ", data);
 
             if(response.ok){
                 alert(data.mensagem || `Login bem sucedido!.`);
