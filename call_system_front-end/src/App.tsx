@@ -1,8 +1,8 @@
 import LoginPage from './pages/Login'
-import RegisterPage from './pages/Register';
 import CriarChamado from './pages/CriarChamados';
 import ConsultarChamado from './pages/ConsultarChamados';
-import AdminPage from './pages/AdminPage';
+import ExcluirUsuarios from './pages/ExcluirUsuarios';
+import CriarUsuarios from './pages/CriarUsuarios';
 import { Navigate, Link, BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,19 +35,28 @@ function App() {
           </div>
         </div>
 
-        <div className='container mt-4 p-5 text-light bg-dark rounded-4 shadow'>
+        <div className='container text-light bg-dark rounded-4 shadow'>
           <BrowserRouter>
-            <Link to='/' className='btn btn-primary'>Criar Ticket</Link>
-            <Link to='/tickets' className='btn btn-primary m-2'>Consultar tickets</Link>
-            {usuarioLogado.role === 'ADMIN' && (
-              <Link to='/admin' className='btn btn-danger m-2'>Excluir Usuários</Link> 
-            )} 
-            <Routes>
-              <Route path='/' element={<CriarChamado userId={usuarioLogado.id} />}/>
-              <Route path='/admin' element={<AdminPage role={usuarioLogado.role}/>}/>
-              <Route path='/tickets' element={<ConsultarChamado />}/>
-              <Route path='*' element={<Navigate to='/' />}/>
-            </Routes>
+            <div className='d-flex gap-3 justify-content-center p-3'>
+              <Link to='/' className='btn btn-primary'>Criar Ticket</Link>
+              <Link to='/tickets' className='btn btn-primary'>Consultar tickets</Link>
+              {usuarioLogado.role === 'ADMIN' && (
+                <Link to='/excluirUser' className='btn btn-danger'>Excluir Usuários</Link>  
+              )} 
+
+              {usuarioLogado.role == 'ADMIN' && (
+                <Link to='/criarUser' className='btn btn-primary'>Criar usuários</Link>
+              )}  
+            </div>
+            <div className='p-3'>
+                <Routes>
+                <Route path='/' element={<CriarChamado userId={usuarioLogado.id} />}/>
+                <Route path='/excluirUser' element={<ExcluirUsuarios role={usuarioLogado.role}/>}/>
+                <Route path='/criarUser' element={<CriarUsuarios role={usuarioLogado.role}/>}/>
+                <Route path='/tickets' element={<ConsultarChamado />}/>
+                <Route path='*' element={<Navigate to='/' />}/>
+              </Routes>
+            </div>
           </BrowserRouter>
         </div>
       </div>
@@ -59,13 +68,11 @@ function App() {
     <>
       <BrowserRouter>
         <nav className='d-flex gap-2 m-3'>
-          <Link to='/user' className='btn btn-outline-primary'>Registrar-se</Link>
           <Link to='/login' className='btn btn-outline-primary'>Fazer login</Link>
         </nav>
         <Routes>
           <Route path='/' element={<LoginPage onLoginSuccess={setUsuarioLogado}/>}/>
           <Route path='/login' element={<LoginPage onLoginSuccess={setUsuarioLogado}/>}/>
-          <Route path='/user' element={<RegisterPage />}/>
           <Route path='*' element={<Navigate to='/'/>}/>
         </Routes>
       </BrowserRouter>

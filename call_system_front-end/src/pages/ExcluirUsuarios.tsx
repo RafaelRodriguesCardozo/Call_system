@@ -11,11 +11,13 @@ interface adminPageProps {
     role: string;
 }
 
-function AdminPage({role}: adminPageProps ){
+function ExcluirUsuarios({role}: adminPageProps ){
 
+    // Usestate para gerar a lista de users
     const [listaUser, setListaUser] = useState<USER[]>([]);
     const [erro, setErro] = useState('');
 
+    // Dá a opção de deletar um ou mais usuários específicos quando se tem o cadastro de administrador
     const deleteUser = async (id: number, nome: string) =>{
         if (!window.confirm(`Deseja realmente deletar o Usuário: "${nome}" (ID #${id})?`)) {
             return;
@@ -25,7 +27,7 @@ function AdminPage({role}: adminPageProps ){
             const response = await fetch(`http://localhost:3036/register/${id}`, {
                 method: 'DELETE',
                 headers: {'content-type' : 'application/json'},
-            });
+            })
         
             const data = await response.json();
     
@@ -49,18 +51,18 @@ function AdminPage({role}: adminPageProps ){
                     headers: {'content-type' : 'application/json'},
                 });
 
-                const data = await response.json()
+                const data = await response.json();
 
                 if(response.ok){
                     setListaUser(data.dados);
                 }else{
                     setErro(data.Erro || 'ocorreu um erro ao listar os usuários')
-                };
+                }
 
             }catch(err){
                 console.log('ocorreu um erro ao listar users', err);
                 setErro('Não foi possível conectar ao servidor.');
-            };
+            }
         }
             userList();
         }, 
@@ -68,8 +70,8 @@ function AdminPage({role}: adminPageProps ){
 
 
     return (
-        <div>
-            <div>{role && <p>Não é possivel apagar usuários {role}</p>}</div>
+        <div className="mt-5">
+            {/* Seção de exclusão de usuário */}
             <div>
                 <div>{erro && <div>{erro}</div>}</div>
                 {listaUser.map((user) => (
@@ -86,8 +88,10 @@ function AdminPage({role}: adminPageProps ){
                     </ul>
                 ))}
             </div>
+            <div className="d-flex justify-content-center">{role && <p>Não é possivel apagar usuários {role}</p>}</div>
         </div>
+
     )
 }
 
-export default AdminPage;
+export default ExcluirUsuarios;
