@@ -7,12 +7,14 @@ interface Ticket {
     PRIORIDADE: string;
     STATUS: string;
     USERID: number;
+    DATA_CRIACAO: string;
 }
 
 function ConsultarChamado() {
     const [listaChamados, setListaChamados] = useState<Ticket[]>([]);
     const [erro, setErro] = useState('');
 
+    // Deixa cada prioridade com uma cor de destaque.
     const classePrioridade = (prioridade: string) => {
         switch (prioridade.trim().toLowerCase()) {
             case 'baixa':
@@ -26,6 +28,22 @@ function ConsultarChamado() {
                 return 'bg-secondary';
         }
     };
+
+    // Mostra data e hora que chamado foi criado.
+    const formatarData = (dataIso: string) => {
+            if (!dataIso) return '';
+            try {
+                return new Intl.DateTimeFormat('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }).format(new Date(dataIso));
+            } catch {
+                return dataIso; // Fallback caso a string da data seja inválida
+            }
+        };
 
         
     const deletarTicket = async (id: number) => {
@@ -81,7 +99,7 @@ function ConsultarChamado() {
     }, []);
 
     return (
-<div className="container mt-4">
+        <div className="container mt-4">
             <h3 className="mb-3 text-center">Lista de Chamados</h3>
             
             {erro && <div className="alert alert-danger">{erro}</div>}
@@ -97,6 +115,7 @@ function ConsultarChamado() {
                                 <div className="d-flex gap-2 align-items-center">
                                     <small className={`badge ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</small>
                                     <small className="badge bg-secondary">Status: {ticket.STATUS}</small>
+                                    <small className="badge bg-secondary">Criação: {formatarData(ticket.DATA_CRIACAO)}</small>
                                     {/* Botão de deletar individual para cada chamado */}
                                     <button 
                                         onClick={() => deletarTicket(ticket.TICKETID)} 

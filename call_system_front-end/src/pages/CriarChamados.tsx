@@ -13,6 +13,8 @@ function CriarChamado({userId}: criarChamadoProps) {
     const[inputPrioridade, setInputPrioridade] = useState('MÉDIA');
     const[Erro, setErro] = useState('');
 
+    const limiteCaracteres = 500;
+
     // Busca a rota de Post no back-end para criar um ticket
     const criarTicket = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
@@ -35,6 +37,10 @@ function CriarChamado({userId}: criarChamadoProps) {
                 setErro('Todas as áreas tem que ser preenchidas');
             }
 
+            if(inputDescricao.length > limiteCaracteres){
+                setErro('O limite máximo de caracteres é 200');
+            }
+
             const data = await response.json();
             
             if(response.ok){
@@ -48,7 +54,7 @@ function CriarChamado({userId}: criarChamadoProps) {
     }
 
     return(
-        <div className="m-4 container">
+        <div className="mb-4 container">
             <title>Criar Chamados</title>
             <div className="w-100 text-center mb-5">
                 <h1>Criar chamados</h1>

@@ -27,10 +27,10 @@ router.get('/tickets', (req,res) => {
 
 router.post('/tickets', async (req, res) => {
 
-    const { title, description, userId, prioridade } = req.body;
+    const { title, description, userId, prioridade} = req.body;
 
     // Verificação de campos obrigatórios
-    if (!title || !description) {
+    if (!title || !description|| !prioridade) {
 
         return res.status(400).json({ Erro: `Todos os campos são obrigatórios!` });
     }
