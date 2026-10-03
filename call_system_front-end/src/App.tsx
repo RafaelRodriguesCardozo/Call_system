@@ -14,7 +14,6 @@ interface Usuario {
     nome?: string;
     email?: string;
     role?: string;
-    [key: string]: unknown; // Garante flexibilidade caso venha mais algum campo da API
 }
 
 
