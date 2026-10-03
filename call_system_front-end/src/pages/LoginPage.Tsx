@@ -1,8 +1,19 @@
 import { useState} from "react";
 
-function RegisterPage(){
-    
-    const [inputUser, setInputUser] = useState('');
+export interface Usuario {
+    id?: number;
+    nome?: string;
+    email?: string;
+    role?: string; // Deixe opcional ou adicione caso venha do back-end
+    [key: string]: unknown; // Permite qualquer outra propriedade extra que venha da API
+}
+
+interface LoginPageProps {
+    onLoginSuccess: (key:Usuario) => void;
+}
+
+function LoginPage({onLoginSuccess}: LoginPageProps){
+
     const [inputEmailUser, setInputEmailUser] = useState('');
     const [inputSenha, setInputSenha] = useState('');
 
@@ -10,25 +21,25 @@ function RegisterPage(){
         e.preventDefault();
 
         try{
-
-            const response = await fetch('https://callsystem-production.up.railway.app/register', {
+            
+            const response = await fetch('https://callsystem-production.up.railway.app:3036/login', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({
-                    usernome : inputUser,
                     useremail : inputEmailUser,
-                    userpassword_hash : inputSenha
+                    userpassword : inputSenha
                 })
-
             });
 
             const data = await response.json()
+            console.log("dados do login: ", data);
 
             if(response.ok){
-                alert(data.mensagem || `Usuário registrado com sucesso!.`);
+                alert(data.mensagem || `Login bem sucedido!.`);
                 console.log(data);
+                onLoginSuccess(data.usuario);
             }else{
-                alert(data.Erro || `Ocorreu um erro ao registrar-se.`);
+                alert(data.Erro || `Ocorreu um erro ao realizar o login.`);
             }
         }
         catch(err){
@@ -38,26 +49,13 @@ function RegisterPage(){
 
     return(
         <div className="container mt-5">
-            <title>registrar-se</title>
+            <title>login</title>
             <form onSubmit={handleSubmit}>
                 <div className="row g-3 mb-3 d-flex justify-content-center">
                     <div className="form-floating col-sm-5">
                         <input
-                            className="form-control form-control-sm"
-                            type="text" 
-                            id="nome" 
-                            placeholder="ex: usuario1"
-                            value={inputUser}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputUser(e.target.value)}    
-                        />
-                        <label htmlFor="nome">Nome de Usuário</label>
-                    </div>
-                </div>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
-                        <input
-                            className="form-control form-control-sm"
-                            type="email" 
+                            className="form-control"
+                            type="text"
                             id="email" 
                             placeholder="ex: 123@gmail.com"
                             value={inputEmailUser}
@@ -69,22 +67,22 @@ function RegisterPage(){
                 <div className="row g-3 mb-3 d-flex justify-content-center">
                     <div className="form-floating col-sm-5">
                         <input
-                            className="form-control form-control-sm"
+                            className="form-control"
                             type="password"
                             id="senha"
                             placeholder="ex: 12345"
                             value={inputSenha}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
                         />
-                        <label htmlFor="senha" className="float">Senha</label>
+                        <label htmlFor="senha">Senha</label>
                     </div>
                 </div>
-                <div className="row g-3 d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary col-sm-3">Criar usuário</button>
+                <div className="row g-3 d-flex justify-content-center mb-3">
+                    <button type="submit" className="btn btn-primary col-sm-3">entrar</button>
                 </div>
             </form>
         </div>
     )
 }
 
-export default RegisterPage;
+export default LoginPage;

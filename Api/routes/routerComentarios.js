@@ -50,6 +50,7 @@ router.post('/tickets/comentarios', async (req, res) => {
             ticketId: results.insertId
         });
     });
+   
 });
 
 router.put('/tickets/:id/updateComentario', (req,res) =>{

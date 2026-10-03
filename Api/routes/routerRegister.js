@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 // get, post, put e delete
 
-router.get('/user', (req,res) => {
+router.get('/register', (req,res) => {
 
     const sql = 'SELECT * FROM USERS'
 
@@ -26,8 +26,8 @@ router.get('/user', (req,res) => {
     });
 });
 
-router.post('/user', async (req, res) => {
-    const {usernome, useremail, userpassword_hash} = req.body;
+router.post('/register', async (req, res) => {
+    const {usernome, useremail, userpassword_hash, role} = req.body;
 
     // Verificação de campos
     if(!usernome || !useremail || !userpassword_hash){
@@ -38,8 +38,8 @@ router.post('/user', async (req, res) => {
         // Hash de senha
         const hashSenha = await bcrypt.hash(userpassword_hash, 10);
 
-        const valores = [usernome, useremail, hashSenha];
-        const sql = (`INSERT INTO USERS (USERNOME, USEREMAIL, USERPASSWORD_HASH) VALUES (?,?,?)`) // Query do Mysql
+        const valores = [usernome, useremail, hashSenha, role];
+        const sql = (`INSERT INTO USERS (USERNOME, USEREMAIL, USERPASSWORD_HASH, ROLE) VALUES (?,?,?,?)`) // Query do Mysql
 
         conexao.query(sql, valores, (err, results) => {
             if(err){
@@ -61,7 +61,7 @@ router.post('/user', async (req, res) => {
 
 });
 
-router.put('/user/:id', async (req,res) =>{
+router.put('/register/:id', async (req,res) =>{
     const {id} = req.params;
     const {usernome, useremail, userpassword_hash} = req.body;
 
@@ -95,7 +95,7 @@ router.put('/user/:id', async (req,res) =>{
     }
 });
 
-router.delete('/user/:id', (req,res) => {
+router.delete('/register/:id', (req,res) => {
     const{id} = req.params;
 
     const sql = `DELETE FROM USERS WHERE USERID = ?`;

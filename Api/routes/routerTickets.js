@@ -26,20 +26,27 @@ router.get('/tickets', (req,res) => {
 });
 
 router.post('/tickets', async (req, res) => {
-    const {title, description, userId, prioridade} = req.body;
 
-    if(!title || !description || !userId){
-        return res.status(400).json({Erro: `Todos os campos são obrigatórios!`});
+    const { title, description, userId, prioridade} = req.body;
+
+    // Verificação de campos obrigatórios
+    if (!title || !description|| !prioridade) {
+
+        return res.status(400).json({ Erro: `Todos os campos são obrigatórios!` });
     }
 
-    const valores = [title, description, userId, prioridade || 'MÉDIA'];
+    const prioridadeFinal = prioridade || 'MÉDIA';
+    const valores = [title, description, userId, prioridadeFinal];
 
-    const sql = (`INSERT INTO TICKETS (TITLE, DESCRIPTION, USERID, PRIORIDADE) VALUES (?,?,?,?)`)
+    const sql = `INSERT INTO TICKETS (TITLE, DESCRIPTION, USERID, PRIORIDADE) VALUES (?,?,?,?)`;
+    console.log('3. Query SQL gerada:', sql);
 
     conexao.query(sql, valores, (err, results) => {
-        if(err){
-            if(err.errno === 1452){
-                return res.status(404).json({Erro: `O usuário com id: ${id} não existe no banco de dados.`});
+        if (err) {
+
+            if (err.errno === 1452) {
+
+                return res.status(404).json({ Erro: `O usuário com id: ${userId} não existe no banco de dados.` });
             }
 
             return res.status(500).json({

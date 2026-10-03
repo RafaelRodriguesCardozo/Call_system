@@ -1,28 +1,38 @@
 import { useState} from "react";
 
-function RegisterPage(){
-    
+
+interface adminPageProps {
+    role: string;
+}
+
+function CriarUsuarios({role}: adminPageProps ){
+
+    // Criar um usuário
     const [inputUser, setInputUser] = useState('');
     const [inputEmailUser, setInputEmailUser] = useState('');
     const [inputSenha, setInputSenha] = useState('');
+    const [inputRole, setInputRole] = useState(role);
 
+
+    // Ao executar cria um usuário
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try{
 
-            const response = await fetch('https://callsystem-production.up.railway.app/register', {
+            const response = await fetch('https://callsystem-production.up.railway.app:3036/register', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({
                     usernome : inputUser,
                     useremail : inputEmailUser,
-                    userpassword_hash : inputSenha
+                    userpassword_hash : inputSenha,
+                    role : inputRole
                 })
 
             });
 
-            const data = await response.json()
+            const data = await response.json();
 
             if(response.ok){
                 alert(data.mensagem || `Usuário registrado com sucesso!.`);
@@ -36,9 +46,9 @@ function RegisterPage(){
         }
     }
 
-    return(
-        <div className="container mt-5">
-            <title>registrar-se</title>
+    return (
+        <div className="container mt-5 mb-5">
+            <h3 className="d-flex justify-content-center mb-5">SEÇÃO DE CRIAÇÃO DE USUÁRIOS</h3>
             <form onSubmit={handleSubmit}>
                 <div className="row g-3 mb-3 d-flex justify-content-center">
                     <div className="form-floating col-sm-5">
@@ -67,7 +77,7 @@ function RegisterPage(){
                     </div>
                 </div>
                 <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+                    <div className="form-floating col-sm-5 ">
                         <input
                             className="form-control form-control-sm"
                             type="password"
@@ -79,12 +89,27 @@ function RegisterPage(){
                         <label htmlFor="senha" className="float">Senha</label>
                     </div>
                 </div>
+                
+                <div className="row g-3 mb-3 d-flex justify-content-center">
+                    <div className="col-sm-5 ">
+                        <select
+                            className="form-select"
+                            value={inputRole}
+                            onChange={(e) => setInputRole(e.target.value)}
+                        >
+                            <option value="CLIENTE" className=" text-success fw-bold">CLIENTE</option>
+                            <option value="ADMIN" className="text-danger fw-bold">ADMIN</option>
+                        </select>
+                    </div>
+
+                </div>
+
                 <div className="row g-3 d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary col-sm-3">Criar usuário</button>
+                    <button type="submit" className="btn btn-primary col-sm-3 ">Criar usuário</button>
                 </div>
             </form>
         </div>
     )
 }
 
-export default RegisterPage;
+export default CriarUsuarios;
