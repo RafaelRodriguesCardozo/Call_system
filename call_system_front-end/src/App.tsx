@@ -1,4 +1,4 @@
-import LoginPage from './pages/LoginPage'
+import LoginPage from './pages/LoginPage';
 import CriarChamado from './pages/CriarChamados';
 import ConsultarChamado from './pages/ConsultarChamados';
 import ExcluirUsuarios from './pages/ExcluirUsuarios';
