@@ -22,7 +22,7 @@ function CriarChamado({userId}: criarChamadoProps) {
         setErro('');
 
         try{ 
-            const response = await fetch('https://callsystem-production.up.railway.app:3036/tickets', {
+            const response = await fetch('http://localhost:3036/tickets', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({

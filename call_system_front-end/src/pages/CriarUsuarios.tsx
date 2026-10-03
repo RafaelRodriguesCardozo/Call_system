@@ -20,7 +20,7 @@ function CriarUsuarios({role}: adminPageProps ){
 
         try{
 
-            const response = await fetch('https://callsystem-production.up.railway.app:3036/register', {
+            const response = await fetch('http://localhost:3036/register', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({
