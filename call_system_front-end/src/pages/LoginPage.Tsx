@@ -1,7 +1,15 @@
 import { useState} from "react";
 
+export interface Usuario {
+    id?: number;
+    nome?: string;
+    email?: string;
+    role?: string; // Deixe opcional ou adicione caso venha do back-end
+    [key: string]: unknown; // Permite qualquer outra propriedade extra que venha da API
+}
+
 interface LoginPageProps {
-    onLoginSuccess: (usuario: any) => void;
+    onLoginSuccess: (key:Usuario) => void;
 }
 
 function LoginPage({onLoginSuccess}: LoginPageProps){

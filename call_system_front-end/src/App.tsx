@@ -10,10 +10,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 
 interface Usuario {
-  id: number;
-  nome: string;
-  email: string;
-  role: string;
+    id?: number;
+    nome?: string;
+    email?: string;
+    role?: string;
+    [key: string]: unknown; // Garante flexibilidade caso venha mais algum campo da API
 }
 
 
@@ -55,9 +56,9 @@ function App() {
             
             <div className='p-3'>
               <Routes>
-                <Route path='/' element={<CriarChamado userId={usuarioLogado.id} />}/>
-                <Route path='/excluirUser' element={<ExcluirUsuarios role={usuarioLogado.role}/>}/>
-                <Route path='/criarUser' element={<CriarUsuarios role={usuarioLogado.role}/>}/>
+                <Route path='/' element={<CriarChamado userId={usuarioLogado.id!} />}/>
+                <Route path='/excluirUser' element={<ExcluirUsuarios role={usuarioLogado.role || 'ADMIN'}/>}/>
+                <Route path='/criarUser' element={<CriarUsuarios role={usuarioLogado.role || 'ADMIN'}/>}/>
                 <Route path='/tickets' element={<ConsultarChamado />}/>
                 <Route path='*' element={<Navigate to='/' />}/>
               </Routes>
@@ -76,8 +77,8 @@ function App() {
           <Link to='/login' className='btn btn-outline-primary'>Fazer login</Link>
         </nav>
         <Routes>
-          <Route path='/' element={<LoginPage onLoginSuccess={setUsuarioLogado}/>}/>
-          <Route path='/login' element={<LoginPage onLoginSuccess={setUsuarioLogado}/>}/>
+          <Route path='/' element={<LoginPage onLoginSuccess={(usuario) => setUsuarioLogado(usuario)}/>}/>
+          <Route path='/login' element={<LoginPage onLoginSuccess={(usuario) => setUsuarioLogado(usuario)}/>}/>
           <Route path='*' element={<Navigate to='/'/>}/>
         </Routes>
       </BrowserRouter>
