@@ -9,7 +9,7 @@ export interface Usuario {
 }
 
 interface LoginPageProps {
-    onLoginSuccess: (key:Usuario) => void;
+    onLoginSuccess: (Usuario:null) => void;
 }
 
 function LoginPage({onLoginSuccess}: LoginPageProps){
@@ -22,7 +22,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
         try{
             
-            const response = await fetch('https://callsystem-production.up.railway.app:3036/login', {
+            const response = await fetch('http://localhost:3036/login', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({

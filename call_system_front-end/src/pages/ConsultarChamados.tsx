@@ -53,7 +53,7 @@ function ConsultarChamado() {
 
         try {
             // Substitui o :id pelo número real do ticket na URL
-            const response = await fetch(`https://callsystem-production.up.railway.app:3036/tickets/${id}`, {
+            const response = await fetch(`http://localhost:3036/tickets/${id}`, {
                 method: 'DELETE',
                 headers: { 'content-type': 'application/json' }
             });
@@ -76,7 +76,7 @@ function ConsultarChamado() {
     useEffect(() => {
         const consultarChamados = async () => {
             try {
-                const response = await fetch('https://callsystem-production.up.railway.app:3036/tickets', {
+                const response = await fetch('http://localhost:3036/tickets', {
                     method: 'GET',
                     headers: { 'content-type': 'application/json' }
                 });
