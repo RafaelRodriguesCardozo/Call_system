@@ -9,7 +9,7 @@ export interface Usuario {
 }
 
 interface LoginPageProps {
-    onLoginSuccess: (key:Usuario) => void;
+    onLoginSuccess: (Usuario:null) => void;
 }
 
 function LoginPage({onLoginSuccess}: LoginPageProps){
