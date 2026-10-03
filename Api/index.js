@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 router(app);
 
-const PORT = 3036;
+const PORT = process.env.PORT || 3036;
 
 // Mensagem de inicio do servidor
 app.listen(PORT, () => {
