@@ -12,11 +12,11 @@ router(app);
 
 const PORT = process.env.PORT || 3036;
 
-// Mensagem de inicio do servidor
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     try{
-        console.log(`Servidor rodando! : http://localhost:${PORT}`);
-    }catch(err){
-        console.log(err);
+        console.log(`Servidor rodando na porta ${PORT}`);
+    }catch{
+        console.log(`Ocorreu um problema ao se conectar com seu back-end`);
     }
+
 });
