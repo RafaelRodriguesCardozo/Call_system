@@ -24,7 +24,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
         }
 
         try{
-            const response = await fetch(`http://localhost:3036/register/${id}`, {
+            const response = await fetch(`https://callsystem-production.up.railway.app:3036/register/${id}`, {
                 method: 'DELETE',
                 headers: {'content-type' : 'application/json'},
             })
@@ -46,7 +46,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
         const userList = async () => {
             try{
 
-                const response = await fetch('http://localhost:3036/register', {
+                const response = await fetch('https://callsystem-production.up.railway.app:3036/register', {
                     method: 'GET',
                     headers: {'content-type' : 'application/json'},
                 });
