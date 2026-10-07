@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 router(app);
 
-const PORT = process.env.PORT || 3036;
+const PORT = 3036;
 
 app.listen(PORT, '0.0.0.0', () => {
     try{
