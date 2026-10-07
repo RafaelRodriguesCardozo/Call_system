@@ -53,7 +53,7 @@ function ConsultarChamado() {
 
         try {
             // Substitui o :id pelo número real do ticket na URL
-            const response = await fetch(`https://callsystem-production.up.railway.app:3036/tickets/${id}`, {
+            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
                 method: 'DELETE',
                 headers: { 'content-type': 'application/json' }
             });
@@ -76,7 +76,7 @@ function ConsultarChamado() {
     useEffect(() => {
         const consultarChamados = async () => {
             try {
-                const response = await fetch('https://callsystem-production.up.railway.app:3036/tickets', {
+                const response = await fetch('https://callsystem-production.up.railway.app/tickets', {
                     method: 'GET',
                     headers: { 'content-type': 'application/json' }
                 });
@@ -105,7 +105,7 @@ function ConsultarChamado() {
             {erro && <div className="alert alert-danger">{erro}</div>}
 
             {listaChamados.length === 0 && !erro ? (
-                <p className="text-center text-muted">Nenhum chamado encontrado.</p>
+                <p className="text-center text-light fw-bold link-underline-info">Nenhum chamado encontrado.</p>
             ) : (
                 <div className="list-group">
                     {listaChamados.map((ticket) => (
