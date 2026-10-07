@@ -22,7 +22,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
         try{
             
-            const response = await fetch('https://callsystem-production.up.railway.app:3036/login', {
+            const response = await fetch('https://callsystem-production.up.railway.app/login', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({
