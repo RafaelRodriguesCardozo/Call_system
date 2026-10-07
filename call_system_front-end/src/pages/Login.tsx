@@ -16,9 +16,12 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
     const [inputEmailUser, setInputEmailUser] = useState('');
     const [inputSenha, setInputSenha] = useState('');
+    const [erro, setErro] = useState('');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setErro('');
 
         try{
             
@@ -30,6 +33,11 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
                     userpassword : inputSenha
                 })
             });
+
+            if(response.status == 429){
+                setErro("Você atingiu o número de tentativas de log-in, tente mais tarde...");
+                return;
+            }
 
             const data = await response.json()
             console.log("dados do login: ", data);
@@ -51,6 +59,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
         <div className="container mt-5">
             <title>login</title>
             <form onSubmit={handleSubmit}>
+                {erro && <div className="alert alert-danger">{erro}</div>}
                 <div className="row g-3 mb-3 d-flex justify-content-center">
                     <div className="form-floating col-sm-5">
                         <input

@@ -21,6 +21,7 @@ const limiter = rateLimit({
     }
 });
 app.use(limiter);
+console.log(limiter);
 
 router(app);
 
