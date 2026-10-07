@@ -16,6 +16,7 @@ const limiter = rateLimit({
     max: 5, // Limite de 100 requisições por IP
     standardHeaders: 'draft-8',
     legacyHeaders: false,
+    trustProxy: true,
     message: {
         erro: 'Muitas requisições feitas a partir deste IP, tente novamente mais tarde.'
     }
