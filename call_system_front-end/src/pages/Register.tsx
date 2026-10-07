@@ -11,7 +11,7 @@ function RegisterPage(){
 
         try{
 
-            const response = await fetch('https://callsystem-production.up.railway.app:3036/register', {
+            const response = await fetch('https://callsystem-production.up.railway.app/register', {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({
