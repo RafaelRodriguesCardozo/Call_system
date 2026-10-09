@@ -11,9 +11,15 @@ function RegisterPage(){
 
         try{
 
+            const token = localStorage.getItem('token')
+
             const response = await fetch('https://callsystem-production.up.railway.app/register', {
                 method: 'POST',
-                headers: {'content-type' : 'application/json'},
+                headers: {
+                    
+                    'content-type' : 'application/json',
+                    'Authorization' : `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     usernome : inputUser,
                     useremail : inputEmailUser,

@@ -44,7 +44,11 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
             if(response.ok){
                 alert(data.mensagem || `Login bem sucedido!.`);
+
+                localStorage.setItem('token', data.token)
+
                 console.log(data);
+
                 onLoginSuccess(data.usuario);
             }else{
                 alert(data.Erro || `Ocorreu um erro ao realizar o login.`);

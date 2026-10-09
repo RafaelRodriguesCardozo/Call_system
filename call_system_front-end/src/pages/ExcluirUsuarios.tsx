@@ -23,10 +23,15 @@ function ExcluirUsuarios({role}: adminPageProps ){
             return;
         }
 
+        const token = localStorage.getItem('token');
+
         try{
             const response = await fetch(`https://callsystem-production.up.railway.app/register/${id}`, {
                 method: 'DELETE',
-                headers: {'content-type' : 'application/json'},
+                headers: {
+                    'content-type' : 'application/json',
+                    'Authorization' : `Bearer ${token}`
+                },
             })
         
             const data = await response.json();
@@ -46,9 +51,14 @@ function ExcluirUsuarios({role}: adminPageProps ){
         const userList = async () => {
             try{
 
+                const token = localStorage.getItem('token');
+
                 const response = await fetch('https://callsystem-production.up.railway.app/register', {
                     method: 'GET',
-                    headers: {'content-type' : 'application/json'},
+                    headers: {
+                        'content-type' : 'application/json',
+                        'Authorization' : `Bearer ${token}`
+                    },
                 });
 
                 const data = await response.json();

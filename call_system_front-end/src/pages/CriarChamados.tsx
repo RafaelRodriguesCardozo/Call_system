@@ -22,9 +22,15 @@ function CriarChamado({userId}: criarChamadoProps) {
         setErro('');
 
         try{ 
+
+            const token = localStorage.getItem('token');
+
             const response = await fetch('https://callsystem-production.up.railway.app/tickets', {
                 method: 'POST',
-                headers: {'content-type' : 'application/json'},
+                headers: {
+                    'content-type' : 'application/json',
+                    'Authorization' : `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     title : inputTitulo,
                     description : inputDescricao,

@@ -52,10 +52,16 @@ function ConsultarChamado() {
         }
 
         try {
+
+            const token = localStorage.getItem('token');
+
             // Substitui o :id pelo número real do ticket na URL
             const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
                 method: 'DELETE',
-                headers: { 'content-type': 'application/json' }
+                headers: { 
+                    'content-type': 'application/json',
+                    'Authorization' : `Bearer ${token}`
+                }
             });
 
             const data = await response.json();
@@ -76,9 +82,15 @@ function ConsultarChamado() {
     useEffect(() => {
         const consultarChamados = async () => {
             try {
+
+                const token = localStorage.getItem('token');
+
                 const response = await fetch('https://callsystem-production.up.railway.app/tickets', {
                     method: 'GET',
-                    headers: { 'content-type': 'application/json' }
+                    headers: { 
+                        'content-type': 'application/json',
+                        'Authorization' : `Bearer ${token}`
+                    }
                 });
 
                 const data = await response.json();
