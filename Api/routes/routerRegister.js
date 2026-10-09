@@ -2,10 +2,9 @@ const { Router } = require('express');
 const router = Router();
 const conexao = require('../infraestrutura/conexao');
 const bcrypt = require('bcrypt');
+const verificarToken = require('../infraestrutura/authMiddleWare');
 
-// get, post, put e delete
-
-router.get('/register', (req,res) => {
+router.get('/register', verificarToken, (req,res) => {
 
     const sql = 'SELECT * FROM USERS'
 
@@ -26,7 +25,7 @@ router.get('/register', (req,res) => {
     });
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', verificarToken, async (req, res) => {
     const {usernome, useremail, userpassword_hash, role} = req.body;
 
     // Verificação de campos
@@ -61,7 +60,7 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.put('/register/:id', async (req,res) =>{
+router.put('/register/:id', verificarToken, async (req,res) =>{
     const {id} = req.params;
     const {usernome, useremail, userpassword_hash} = req.body;
 
@@ -95,7 +94,7 @@ router.put('/register/:id', async (req,res) =>{
     }
 });
 
-router.delete('/register/:id', (req,res) => {
+router.delete('/register/:id', verificarToken, (req,res) => {
     const{id} = req.params;
 
     const sql = `DELETE FROM USERS WHERE USERID = ?`;

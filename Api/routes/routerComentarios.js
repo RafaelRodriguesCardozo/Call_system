@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const router = Router();
 const conexao = require('../infraestrutura/conexao');
+const verificarToken = require('../infraestrutura/authMiddleWare');
 
 // get, post, put e delete
 
-router.get('/tickets/:id/comentarios', (req,res) => {
+router.get('/tickets/:id/comentarios', verificarToken, (req,res) => {
     const {id} = req.params;
 
     const sql = 'SELECT * FROM TICKET_COMENTARIOS'
@@ -26,7 +27,7 @@ router.get('/tickets/:id/comentarios', (req,res) => {
     });
 });
 
-router.post('/tickets/comentarios', async (req, res) => {
+router.post('/tickets/comentarios', verificarToken, async (req, res) => {
     const {ticketId, userId, mensagem} = req.body;
 
     if(!ticketId || !userId || !mensagem){
@@ -53,7 +54,7 @@ router.post('/tickets/comentarios', async (req, res) => {
    
 });
 
-router.put('/tickets/:id/updateComentario', (req,res) =>{
+router.put('/tickets/:id/updateComentario', verificarToken, (req,res) =>{
     const {id} = req.params;
     const {mensagem} = req.body;
 
@@ -83,7 +84,7 @@ router.put('/tickets/:id/updateComentario', (req,res) =>{
     });
 });
 
-router.delete('/tickets/:id/deleteComentario', (req,res) => {
+router.delete('/tickets/:id/deleteComentario', verificarToken, (req,res) => {
     const{id} = req.params;
 
     const sql = `DELETE FROM TICKET_COMENTARIOS WHERE TICKETCOMENTARIOSID = ?`;

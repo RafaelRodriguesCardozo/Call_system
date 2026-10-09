@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const conexao = require('../infraestrutura/conexao');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post('/login', (req, res) => {
     const { useremail, userpassword } = req.body;
@@ -30,6 +31,7 @@ router.post('/login', (req, res) => {
         const usuario = results[0];
 
         try {
+
             // Compara a senha digitada com a hash salva no banco
             const senhaValida = await bcrypt.compare(userpassword, usuario.USERPASSWORD_HASH);
 
@@ -37,15 +39,20 @@ router.post('/login', (req, res) => {
                 return res.status(401).json({ Erro: 'E-mail ou senha incorretos.' });
             }
 
+            const payload = {
+                id: usuario.USERID,
+                nome: usuario.USERNOME,
+                email: usuario.USEREMAIL,
+                role: usuario.ROLE
+            };
+
+            const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
+
             // Login bem-sucedido (retorna dados básicos sem a senha)
             return res.status(200).json({
                 mensagem: 'Login realizado com sucesso!',
-                usuario: {
-                    id: usuario.USERID,
-                    nome: usuario.USERNOME,
-                    email: usuario.USEREMAIL,
-                    role: usuario.ROLE
-                }
+                token: token,
+                usuario: payload
             });
 
         } catch (error) {
