@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const router = Router();
 const conexao = require('../infraestrutura/conexao');
+const verificarToken = require('../infraestrutura/authMiddleWare');
 
 // get, post, put e delete
 
-router.get('/tickets', (req,res) => {
+router.get('/tickets', verificarToken, (req,res) => {
 
     const sql = 'SELECT * FROM TICKETS'
 
@@ -25,7 +26,7 @@ router.get('/tickets', (req,res) => {
     });
 });
 
-router.post('/tickets', async (req, res) => {
+router.post('/tickets', verificarToken, async (req, res) => {
 
     const { title, description, userId, prioridade} = req.body;
 
@@ -62,7 +63,7 @@ router.post('/tickets', async (req, res) => {
     });
 });
 
-router.put('/tickets/:id', (req,res) =>{
+router.put('/tickets/:id', verificarToken, (req,res) =>{
     const {id} = req.params;
     const {title, description, status, prioridade, data} = req.body;
 
@@ -85,7 +86,7 @@ router.put('/tickets/:id', (req,res) =>{
     });
 });
 
-router.delete('/tickets/:id', (req,res) => {
+router.delete('/tickets/:id', verificarToken, (req,res) => {
     const{id} = req.params;
 
     const sql = `DELETE FROM TICKETS WHERE TICKETID = ?`;
