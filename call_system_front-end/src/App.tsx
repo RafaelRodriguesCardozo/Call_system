@@ -3,6 +3,7 @@ import CriarChamado from './pages/CriarChamados';
 import ConsultarChamado from './pages/ConsultarChamados';
 import ExcluirUsuarios from './pages/ExcluirUsuarios';
 import CriarUsuarios from './pages/CriarUsuarios';
+import GerenciarChamados from './pages/GerenciarChamados';
 import { Navigate, Link, BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import Container from 'react-bootstrap/Container'
@@ -39,18 +40,24 @@ function App() {
 
         <div className='container text-light bg-dark bg-gradient rounded-4 shadow p-4'>
           <BrowserRouter>
+
             <div className='d-flex gap-3 justify-content-center p-3'>
+              
+              {/* Rotas gerais qualquer role pode acessar */}
               <Link to='/' className='btn btn-primary'>Criar Ticket</Link>
               <Link to='/tickets' className='btn btn-primary'>Consultar tickets</Link>
 
+              {/* Rotas que só podem ter acesso caso o usuário for Administrador */}
+              {usuarioLogado.role == 'ADMIN' && (
+                <Link to='/gerenciarChamados' className='btn btn-primary'>Gerenciar Chamados</Link>
+              )}
               {usuarioLogado.role == 'ADMIN' && (
                 <Link to='/criarUser' className='btn btn-primary'>Criar usuários</Link>
               )}
-
               {usuarioLogado.role === 'ADMIN' && (
                 <Link to='/excluirUser' className='btn btn-danger'>Excluir Usuários</Link>  
               )}
-
+              
             </div>
             
             <div className='p-3'>
@@ -58,6 +65,7 @@ function App() {
                 <Route path='/' element={<CriarChamado userId={usuarioLogado.id} />}/>
                 <Route path='/excluirUser' element={<ExcluirUsuarios role={usuarioLogado.role}/>}/>
                 <Route path='/criarUser' element={<CriarUsuarios role={usuarioLogado.role}/>}/>
+                <Route path='/gerenciarChamados' element={<GerenciarChamados role={usuarioLogado.role}/>}/>
                 <Route path='/tickets' element={<ConsultarChamado />}/>
                 <Route path='*' element={<Navigate to='/' />}/>
               </Routes>

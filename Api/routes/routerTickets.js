@@ -65,10 +65,10 @@ router.post('/tickets', verificarToken, async (req, res) => {
 
 router.put('/tickets/:id', verificarToken, (req,res) =>{
     const {id} = req.params;
-    const {title, description, status, prioridade, data} = req.body;
+    const {status, data} = req.body;
 
-    const sql = `UPDATE TICKETS SET TITLE = ?, DESCRIPTION = ?, STATUS = ?, PRIORIDADE = ? WHERE TICKETID = ?`;
-    const valores = [title, description, status, prioridade, id];
+    const sql = `UPDATE TICKETS SET STATUS = ? WHERE TICKETID = ?`;
+    const valores = [status, id];
 
     conexao.query(sql, valores, (err, results) => {
         
@@ -105,7 +105,7 @@ router.delete('/tickets/:id', verificarToken, (req,res) => {
             })
         }
 
-        return res.status(201).json({
+        return res.status(204).json({
             Mensagem: `O chamado com id: ${id} foi deletado com sucesso!`,
             results: results.affectedRows
         })

@@ -12,10 +12,11 @@ interface adminPageProps {
 }
 
 function ExcluirUsuarios({role}: adminPageProps ){
-
-    // Usestate para gerar a lista de users
     const [listaUser, setListaUser] = useState<USER[]>([]);
     const [erro, setErro] = useState('');
+
+    const apiUrl = "https://callsystem-production.up.railway.app";
+    //const localApi = "http://localhost";
 
     // Dá a opção de deletar um ou mais usuários específicos quando se tem o cadastro de administrador
     const deleteUser = async (id: number, nome: string) =>{
@@ -26,7 +27,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
         const token = localStorage.getItem('token');
 
         try{
-            const response = await fetch(`https://callsystem-production.up.railway.app/register/${id}`, {
+            const response = await fetch(`${apiUrl}/register/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'content-type' : 'application/json',
@@ -53,7 +54,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
 
                 const token = localStorage.getItem('token');
 
-                const response = await fetch('https://callsystem-production.up.railway.app/register', {
+                const response = await fetch(`${apiUrl}/register`, {
                     method: 'GET',
                     headers: {
                         'content-type' : 'application/json',
@@ -83,7 +84,13 @@ function ExcluirUsuarios({role}: adminPageProps ){
         <div className="mt-5">
             {/* Seção de exclusão de usuário */}
             <div>
-                <div>{erro && <div>{erro}</div>}</div>
+
+                {/* Se houver erro ao carregar os usuários ele renderiza o alerta, se não mostra o texto informativo */}
+                {erro === "Não foi possível conectar ao servidor." ? (
+                    <div>{erro && <div className="alert alert-danger text-center">{erro}</div>}</div>
+                ) : (<div><h5 className="text-info p-2 text-center">somente o {role} pode excluir um usuário</h5></div>)}
+                
+                {/* Renderiza todos os usuários criados */}
                 {listaUser.map((user) => (
                     <ul key={user.USERID} className="list-group mb-3">
                         <li className="list-group-item text-black d-flex justify-content-between">
@@ -98,7 +105,6 @@ function ExcluirUsuarios({role}: adminPageProps ){
                     </ul>
                 ))}
             </div>
-            <div className="d-flex justify-content-center">{role && <p>Não é possivel apagar usuários {role}</p>}</div>
         </div>
 
     )

@@ -15,6 +15,9 @@ function CriarChamado({userId}: criarChamadoProps) {
 
     const limiteCaracteres = 500;
 
+    const apiUrl = "https://callsystem-production.up.railway.app";
+    //const localApi = "http://localhost";
+
     // Busca a rota de Post no back-end para criar um ticket
     const criarTicket = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
@@ -25,7 +28,7 @@ function CriarChamado({userId}: criarChamadoProps) {
 
             const token = localStorage.getItem('token');
 
-            const response = await fetch('https://callsystem-production.up.railway.app/tickets', {
+            const response = await fetch(`${apiUrl}/tickets`, {
                 method: 'POST',
                 headers: {
                     'content-type' : 'application/json',

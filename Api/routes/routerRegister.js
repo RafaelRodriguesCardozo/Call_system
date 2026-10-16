@@ -83,7 +83,7 @@ router.put('/register/:id', verificarToken, async (req,res) =>{
                 });
             }
 
-            return res.status(200).json({
+            return res.status(201).json({
                 Mensagem: `Usuário atualizado com sucesso!`,
                 userId: results.affectedRows
             });
@@ -113,7 +113,7 @@ router.delete('/register/:id', verificarToken, (req,res) => {
             })
         }
 
-        return res.status(200).json({
+        return res.status(204).json({
             Mensagem: `O usuário com id: ${id} foi deletado com sucesso!`,
             userId: results.affectedRows 
         });

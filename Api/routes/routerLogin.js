@@ -3,8 +3,21 @@ const router = Router();
 const conexao = require('../infraestrutura/conexao');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const rateLimit = require("express-rate-limit");
 
-router.post('/login', (req, res) => {
+// Configuração do Rate Limit
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutos
+    max: 5, // Limite de 100 requisições por IP
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    //trustProxy: true,
+    message: {
+        erro: 'Muitas requisições feitas a partir deste IP, tente novamente mais tarde.'
+    }
+});
+
+router.post('/login', limiter, (req, res) => {
     const { useremail, userpassword } = req.body;
 
     // Validação dos campos
@@ -49,7 +62,7 @@ router.post('/login', (req, res) => {
             const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
 
             // Login bem-sucedido (retorna dados básicos sem a senha)
-            return res.status(200).json({
+            return res.status(201).json({
                 mensagem: 'Login realizado com sucesso!',
                 token: token,
                 usuario: payload

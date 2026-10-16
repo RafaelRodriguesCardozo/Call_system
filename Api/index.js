@@ -2,7 +2,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const cors = require("cors");
-const rateLimit = require("express-rate-limit");
 const router = require("./routes/index");
 const conexao = require("./infraestrutura/conexao");
 
@@ -12,20 +11,6 @@ app.set('trust proxy', 1);
 
 app.use(cors());
 app.use(express.json());
-
-// Configuração do Rate Limit
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 5, // Limite de 100 requisições por IP
-    standardHeaders: 'draft-8',
-    legacyHeaders: false,
-    trustProxy: true,
-    message: {
-        erro: 'Muitas requisições feitas a partir deste IP, tente novamente mais tarde.'
-    }
-});
-app.use(limiter);
-console.log(limiter);
 
 router(app);
 

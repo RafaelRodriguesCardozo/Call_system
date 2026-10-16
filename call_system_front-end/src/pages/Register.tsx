@@ -6,6 +6,9 @@ function RegisterPage(){
     const [inputEmailUser, setInputEmailUser] = useState('');
     const [inputSenha, setInputSenha] = useState('');
 
+    const apiUrl = "https://callsystem-production.up.railway.app";
+    //const localApi = "http://localhost";
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -13,10 +16,9 @@ function RegisterPage(){
 
             const token = localStorage.getItem('token')
 
-            const response = await fetch('https://callsystem-production.up.railway.app/register', {
+            const response = await fetch(`${apiUrl}/register`, {
                 method: 'POST',
                 headers: {
-                    
                     'content-type' : 'application/json',
                     'Authorization' : `Bearer ${token}`
                 },

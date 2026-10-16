@@ -18,6 +18,9 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
     const [inputSenha, setInputSenha] = useState('');
     const [erro, setErro] = useState('');
 
+    const apiUrl = "https://callsystem-production.up.railway.app";
+    //const localApi = "http://localhost";
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -25,7 +28,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
         try{
             
-            const response = await fetch('https://callsystem-production.up.railway.app/login', {
+            const response = await fetch(`${apiUrl}/login`, {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({
@@ -47,9 +50,8 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
                 localStorage.setItem('token', data.token)
 
-                console.log(data);
-
                 onLoginSuccess(data.usuario);
+                
             }else{
                 alert(data.Erro || `Ocorreu um erro ao realizar o login.`);
             }

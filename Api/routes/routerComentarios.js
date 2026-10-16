@@ -3,8 +3,6 @@ const router = Router();
 const conexao = require('../infraestrutura/conexao');
 const verificarToken = require('../infraestrutura/authMiddleWare');
 
-// get, post, put e delete
-
 router.get('/tickets/:id/comentarios', verificarToken, (req,res) => {
     const {id} = req.params;
 
@@ -20,7 +18,7 @@ router.get('/tickets/:id/comentarios', verificarToken, (req,res) => {
             }); 
         }
 
-        return res.status(200).json({
+        return res.status(201).json({
             mensagem: `Sucesso!`, 
             dados: results
         });
@@ -78,7 +76,7 @@ router.put('/tickets/:id/updateComentario', verificarToken, (req,res) =>{
             return res.status(404).json({Erro: `Comentario com id: ${id} não existe.`});
         }
 
-        return res.status(200).json({
+        return res.status(201).json({
             Mensagem: `Comentario atualizado com sucesso!`,
         });
     });
@@ -103,7 +101,7 @@ router.delete('/tickets/:id/deleteComentario', verificarToken, (req,res) => {
             })
         }
 
-        return res.status(201).json({
+        return res.status(204).json({
             Mensagem: `O comentario com id: ${id} foi deletado com sucesso!`,
             results: results.affectedRows
         })

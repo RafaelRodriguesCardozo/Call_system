@@ -13,6 +13,7 @@ interface Ticket {
 function ConsultarChamado() {
     const [listaChamados, setListaChamados] = useState<Ticket[]>([]);
     const [erro, setErro] = useState('');
+    const [carregando, setCarregando] = useState(true);
 
     // Deixa cada prioridade com uma cor de destaque.
     const classePrioridade = (prioridade: string) => {
@@ -45,6 +46,8 @@ function ConsultarChamado() {
             }
         };
 
+    const apiUrl = "https://callsystem-production.up.railway.app";
+    //const localApi = "http://localhost";
         
     const deletarTicket = async (id: number) => {
         if (!window.confirm(`Deseja realmente deletar o chamado #${id}?`)) {
@@ -56,7 +59,7 @@ function ConsultarChamado() {
             const token = localStorage.getItem('token');
 
             // Substitui o :id pelo número real do ticket na URL
-            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
+            const response = await fetch(`${apiUrl}/tickets/${id}`, {
                 method: 'DELETE',
                 headers: { 
                     'content-type': 'application/json',
@@ -83,9 +86,12 @@ function ConsultarChamado() {
         const consultarChamados = async () => {
             try {
 
+                // Ao fazer a requisição ativa o evento de carregamento
+                setCarregando(true);
+
                 const token = localStorage.getItem('token');
 
-                const response = await fetch('https://callsystem-production.up.railway.app/tickets', {
+                const response = await fetch(`${apiUrl}/tickets`, {
                     method: 'GET',
                     headers: { 
                         'content-type': 'application/json',
@@ -104,6 +110,9 @@ function ConsultarChamado() {
             } catch (err) {
                 console.log('Ocorreu um erro ao consultar chamados', err);
                 setErro('Não foi possível conectar ao servidor.');
+            } finally {
+                // Finaliza o evento de carregamento ao Carregar os elementos na tela
+                setCarregando(false);
             }
         };
 
@@ -116,32 +125,40 @@ function ConsultarChamado() {
             
             {erro && <div className="alert alert-danger">{erro}</div>}
 
-            {listaChamados.length === 0 && !erro ? (
-                <p className="text-center text-light fw-bold link-underline-info">Nenhum chamado encontrado.</p>
-            ) : (
-                <div className="list-group">
-                    {listaChamados.map((ticket) => (
-                        <div key={ticket.TICKETID} className="list-group-item list-group-item-action mb-3 shadow-sm rounded">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <h5 className="mb-1 text-primary">{ticket.TITLE}</h5>
-                                <div className="d-flex gap-2 align-items-center">
-                                    <small className={`badge ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</small>
-                                    <small className="badge bg-secondary">Status: {ticket.STATUS}</small>
-                                    <small className="badge bg-secondary">Criação: {formatarData(ticket.DATA_CRIACAO)}</small>
-                                    {/* Botão de deletar individual para cada chamado */}
-                                    <button 
-                                        onClick={() => deletarTicket(ticket.TICKETID)} 
-                                        className="btn btn-danger btn-sm rounded"
-                                    >Excluir</button>
-                                </div>
-                            </div>
-
-                            <p className="mb-1 text-break mt-2">{ticket.DESCRIPTION}</p>
-                            <small className="text-muted">ID do Chamado: #{ticket.TICKETID} | Usuário: {ticket.USERID}</small>
-                        </div>
-                    ))}
+            {/* SE ESTIVER A CARREGAR, EXibe O SPINNER DO BOOTSTRAP */}
+            {carregando ? (
+                <div className="text-center my-5">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="text-white visually-hidden ">Carregando...</span>
+                    </div>
+                    <p className="text-white mt-2 ">A carregar chamados...</p>
                 </div>
-            )}
+            ) : listaChamados.length === 0 && !erro ? (
+                    <p className="text-center text-light fw-bold link-underline-info">Nenhum chamado encontrado.</p>
+                ) : (
+                    <div className="list-group">
+                        {listaChamados.map((ticket) => (
+                            <div key={ticket.TICKETID} className="list-group-item list-group-item-action mb-3 shadow-sm rounded">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <h5 className="mb-1 text-primary">{ticket.TITLE}</h5>
+                                    <div className="d-flex gap-2 align-items-center">
+                                        <small className={`badge ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</small>
+                                        <small className="badge bg-secondary">Status: {ticket.STATUS}</small>
+                                        <small className="badge bg-secondary">Criação: {formatarData(ticket.DATA_CRIACAO)}</small>
+                                        {/* Botão de deletar individual para cada chamado */}
+                                        <button 
+                                            onClick={() => deletarTicket(ticket.TICKETID)} 
+                                            className="btn btn-danger btn-sm rounded"
+                                        >Excluir</button>
+                                    </div>
+                                </div>
+
+                                <p className="mb-1 text-break mt-2">{ticket.DESCRIPTION}</p>
+                                <small className="text-muted">ID do Chamado: #{ticket.TICKETID} | Usuário: {ticket.USERID}</small>
+                            </div>
+                        ))}
+                    </div>
+                )}
         </div>
     );
 }
