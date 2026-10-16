@@ -15,7 +15,7 @@ function CriarChamado({userId}: criarChamadoProps) {
 
     const limiteCaracteres = 500;
 
-    const apiUrl = "https://callsystem-production.up.railway.app";
+    const apiUrl = "https://callsystem-production.up.railway.app:3036";
     //const localApi = "http://localhost";
 
     // Busca a rota de Post no back-end para criar um ticket

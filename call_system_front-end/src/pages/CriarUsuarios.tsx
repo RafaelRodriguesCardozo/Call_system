@@ -13,7 +13,7 @@ function CriarUsuarios({role}: adminPageProps ){
     const [inputSenha, setInputSenha] = useState('');
     const [inputRole, setInputRole] = useState(role);
 
-    const apiUrl = "https://callsystem-production.up.railway.app";
+    const apiUrl = "https://callsystem-production.up.railway.app:3036";
     //const localApi = "http://localhost";
 
     // Ao executar cria um usuário

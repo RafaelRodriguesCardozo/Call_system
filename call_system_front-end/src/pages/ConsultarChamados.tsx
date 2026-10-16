@@ -46,7 +46,7 @@ function ConsultarChamado() {
             }
         };
 
-    const apiUrl = "https://callsystem-production.up.railway.app";
+    const apiUrl = "https://callsystem-production.up.railway.app:3036";
     //const localApi = "http://localhost";
         
     const deletarTicket = async (id: number) => {

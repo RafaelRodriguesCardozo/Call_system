@@ -15,7 +15,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
     const [listaUser, setListaUser] = useState<USER[]>([]);
     const [erro, setErro] = useState('');
 
-    const apiUrl = "https://callsystem-production.up.railway.app";
+    const apiUrl = "https://callsystem-production.up.railway.app:3036";
     //const localApi = "http://localhost";
 
     // Dá a opção de deletar um ou mais usuários específicos quando se tem o cadastro de administrador

@@ -18,6 +18,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
     const [inputSenha, setInputSenha] = useState('');
     const [erro, setErro] = useState('');
 
+    const apiUrl = "https://callsystem-production.up.railway.app:3036";
     //const localApi = "http://localhost";
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +28,7 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
         try{
             
-            const response = await fetch(`https://callsystem-production.up.railway.app/login`, {
+            const response = await fetch(`${apiUrl}/login`, {
                 method: 'POST',
                 headers: {'content-type' : 'application/json'},
                 body: JSON.stringify({

@@ -27,7 +27,7 @@ function GerenciarChamados( {role}: adminPageProps ){
     // Estado para saber qual ID de ticket está a ser atualizado no momento (para desativar o botão)
     const [idAtualizando, setIdAtualizando] = useState<number | null>(null);
 
-        const apiUrl = "https://callsystem-production.up.railway.app";
+        const apiUrl = "https://callsystem-production.up.railway.app:3036";
     //const localApi = "http://localhost";
 
     useEffect(() => {

@@ -6,7 +6,7 @@ function RegisterPage(){
     const [inputEmailUser, setInputEmailUser] = useState('');
     const [inputSenha, setInputSenha] = useState('');
 
-    const apiUrl = "https://callsystem-production.up.railway.app";
+    const apiUrl = "https://callsystem-production.up.railway.app:3036";
     //const localApi = "http://localhost";
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
