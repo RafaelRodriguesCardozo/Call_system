@@ -5,13 +5,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const rateLimit = require("express-rate-limit");
 
-// Configuração do Rate Limit
+// Configuração do Rate Limit corrigida
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 5, // Limite de 100 requisições por IP
+    max: 100, // Limite de 100 requisições por IP
     standardHeaders: 'draft-8',
     legacyHeaders: false,
-    //trustProxy: true,
     message: {
         erro: 'Muitas requisições feitas a partir deste IP, tente novamente mais tarde.'
     }
@@ -30,6 +29,7 @@ router.post('/login', limiter, (req, res) => {
 
     conexao.query(sql, [useremail], async (err, results) => {
         if (err) {
+            console.error("ERRO NO MYSQL:", err);
             return res.status(500).json({ 
                 Erro: 'Erro interno no servidor.', 
                 detalhes: err.message 
@@ -44,7 +44,6 @@ router.post('/login', limiter, (req, res) => {
         const usuario = results[0];
 
         try {
-
             // Compara a senha digitada com a hash salva no banco
             const senhaValida = await bcrypt.compare(userpassword, usuario.USERPASSWORD_HASH);
 
@@ -59,17 +58,27 @@ router.post('/login', limiter, (req, res) => {
                 role: usuario.ROLE
             };
 
-            const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
+            // Certifique-se de que a variável JWT_SECRET existe no Railway!
+            if (!process.env.JWT_SECRET) {
+                console.error("ERRO CRÍTICO: JWT_SECRET não está definida nas variáveis de ambiente!");
+                return res.status(500).json({ Erro: 'Erro de configuração do servidor (JWT_SECRET ausente).' });
+            }
 
-            // Login bem-sucedido (retorna dados básicos sem a senha)
-            return res.status(201).json({
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+            // Login bem-sucedido
+            return res.status(200).json({
                 mensagem: 'Login realizado com sucesso!',
                 token: token,
                 usuario: payload
             });
 
         } catch (error) {
-            return res.status(500).json({ Erro: 'Erro ao processar a autenticação.' });
+            console.error("ERRO NO TRY/CATCH DO LOGIN:", error);
+            return res.status(500).json({ 
+                Erro: 'Erro ao processar a autenticação.',
+                detalhes: error.message 
+            });
         }
     });
 });
