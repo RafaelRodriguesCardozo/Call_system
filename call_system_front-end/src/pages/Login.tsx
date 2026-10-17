@@ -24,14 +24,11 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
         setErro('');
 
         try{
-            
-            const token = localStorage.getItem('token');
 
             const response = await fetch(`https://callsystem-production.up.railway.app/login`, {
                 method: 'POST',
                 headers: {
                     'content-type' : 'application/json',
-                    'Authorization' : `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     useremail : inputEmailUser,
