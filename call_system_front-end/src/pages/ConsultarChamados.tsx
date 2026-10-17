@@ -46,39 +46,6 @@ function ConsultarChamado() {
             }
         };
 
-    const deletarTicket = async (id: number) => {
-        if (!window.confirm(`Deseja realmente deletar o chamado #${id}?`)) {
-            return;
-        }
-
-        try {
-
-            const token = localStorage.getItem('token');
-
-            // Substitui o :id pelo número real do ticket na URL
-            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
-                method: 'DELETE',
-                headers: { 
-                    'content-type': 'application/json',
-                    'Authorization' : `Bearer ${token}`
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                alert(data.mensagem || 'Chamado deletado com sucesso');
-                // Atualiza a lista na tela automaticamente removendo o item deletado
-                setListaChamados(listaChamados.filter(ticket => ticket.TICKETID !== id));
-            } else {
-                alert(data.Erro || 'Erro ao deletar chamado');
-            }
-        } catch (err) {
-            console.log('Ocorreu um erro ao deletar o chamado', err);
-            alert('Não foi possível conectar ao servidor para deletar.');
-        }
-    };
-
     useEffect(() => {
         const consultarChamados = async () => {
             try {
@@ -142,11 +109,6 @@ function ConsultarChamado() {
                                         <small className={`badge ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</small>
                                         <small className="badge bg-secondary">Status: {ticket.STATUS}</small>
                                         <small className="badge bg-secondary">Criação: {formatarData(ticket.DATA_CRIACAO)}</small>
-                                        {/* Botão de deletar individual para cada chamado */}
-                                        <button 
-                                            onClick={() => deletarTicket(ticket.TICKETID)} 
-                                            className="btn btn-danger btn-sm rounded"
-                                        >Excluir</button>
                                     </div>
                                 </div>
 

@@ -27,6 +27,39 @@ function GerenciarChamados( {role}: adminPageProps ){
     // Estado para saber qual ID de ticket está a ser atualizado no momento (para desativar o botão)
     const [idAtualizando, setIdAtualizando] = useState<number | null>(null);
 
+        const deletarTicket = async (id: number) => {
+        if (!window.confirm(`Deseja realmente deletar o chamado #${id}?`)) {
+            return;
+        }
+
+        try {
+
+            const token = localStorage.getItem('token');
+
+            // Substitui o :id pelo número real do ticket na URL
+            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
+                method: 'DELETE',
+                headers: { 
+                    'content-type': 'application/json',
+                    'Authorization' : `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.mensagem || 'Chamado deletado com sucesso');
+                // Atualiza a lista na tela automaticamente removendo o item deletado
+                setListaChamados(listaChamados.filter(ticket => ticket.TICKETID !== id));
+            } else {
+                alert(data.Erro || 'Erro ao deletar chamado');
+            }
+        } catch (err) {
+            console.log('Ocorreu um erro ao deletar o chamado', err);
+            alert('Não foi possível conectar ao servidor para deletar.');
+        }
+    };
+
     useEffect(() => {
         const consultarChamados = async () => {
             try {
@@ -136,6 +169,7 @@ function GerenciarChamados( {role}: adminPageProps ){
                                     <option value="FINALIZADO">FINALIZADO</option>
                                 </select>
 
+                                {/* Botão para atualizar status do chamado */}
                                 <button 
                                     type="button"
                                     className="btn btn-primary text-nowrap d-flex align-items-center gap-2"
@@ -147,6 +181,14 @@ function GerenciarChamados( {role}: adminPageProps ){
                                         <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     )}
                                     {idAtualizando === ticket.TICKETID ? 'Salvando...' : 'Alterar status'}
+                                </button>
+
+                                {/* Botão de deletar individual para cada chamado */}
+                                <button 
+                                    onClick={() => deletarTicket(ticket.TICKETID)} 
+                                    className="btn btn-danger btn-sm rounded"
+                                >
+                                    Excluir
                                 </button>
                             </div>
                         </div>
