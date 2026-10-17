@@ -44,8 +44,8 @@ function App() {
             <div className='d-flex gap-3 justify-content-center p-3'>
               
               {/* Rotas gerais qualquer role pode acessar */}
-              <Link to='/' className='btn btn-primary'>Criar Ticket</Link>
-              <Link to='/tickets' className='btn btn-primary'>Consultar tickets</Link>
+              <Link to='/' className='btn btn-primary'>Criar Chamados</Link>
+              <Link to='/tickets' className='btn btn-primary'>Consultar Chamados</Link>
 
               {/* Rotas que só podem ter acesso caso o usuário for Administrador */}
               {usuarioLogado.role == 'ADMIN' && (
