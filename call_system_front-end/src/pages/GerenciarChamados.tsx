@@ -33,7 +33,7 @@ function GerenciarChamados( {role}: adminPageProps ){
                 setCarregando(true); // Liga o loading antes de buscar
                 const token = localStorage.getItem('token');
 
-                const response = await fetch(`https://callsystem-production.up.railway.app:3036/tickets`, {
+                const response = await fetch(`https://callsystem-production.up.railway.app/tickets`, {
                     method: 'GET',
                     headers: { 
                         'content-type': 'application/json',
