@@ -18,8 +18,6 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
     const [inputSenha, setInputSenha] = useState('');
     const [erro, setErro] = useState('');
 
-    //const localApi = "http://localhost";
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -27,9 +25,14 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
 
         try{
             
-            const response = await fetch(`https://callsystem-production.up.railway.app:3036/login`, {
+            const token = localStorage.getItem('token');
+
+            const response = await fetch(`https://callsystem-production.up.railway.app/login`, {
                 method: 'POST',
-                headers: {'content-type' : 'application/json'},
+                headers: {
+                    'content-type' : 'application/json',
+                    'Authorization' : `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     useremail : inputEmailUser,
                     userpassword : inputSenha

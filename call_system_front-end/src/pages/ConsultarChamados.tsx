@@ -46,9 +46,6 @@ function ConsultarChamado() {
             }
         };
 
-    const apiUrl = "https://callsystem-production.up.railway.app:3036";
-    //const localApi = "http://localhost";
-        
     const deletarTicket = async (id: number) => {
         if (!window.confirm(`Deseja realmente deletar o chamado #${id}?`)) {
             return;
@@ -59,7 +56,7 @@ function ConsultarChamado() {
             const token = localStorage.getItem('token');
 
             // Substitui o :id pelo número real do ticket na URL
-            const response = await fetch(`${apiUrl}/tickets/${id}`, {
+            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
                 method: 'DELETE',
                 headers: { 
                     'content-type': 'application/json',
@@ -91,7 +88,7 @@ function ConsultarChamado() {
 
                 const token = localStorage.getItem('token');
 
-                const response = await fetch(`${apiUrl}/tickets`, {
+                const response = await fetch(`https://callsystem-production.up.railway.app:3036/tickets`, {
                     method: 'GET',
                     headers: { 
                         'content-type': 'application/json',

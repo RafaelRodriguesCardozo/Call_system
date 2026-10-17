@@ -27,16 +27,13 @@ function GerenciarChamados( {role}: adminPageProps ){
     // Estado para saber qual ID de ticket está a ser atualizado no momento (para desativar o botão)
     const [idAtualizando, setIdAtualizando] = useState<number | null>(null);
 
-        const apiUrl = "https://callsystem-production.up.railway.app:3036";
-    //const localApi = "http://localhost";
-
     useEffect(() => {
         const consultarChamados = async () => {
             try {
                 setCarregando(true); // Liga o loading antes de buscar
                 const token = localStorage.getItem('token');
 
-                const response = await fetch(`${apiUrl}/tickets`, {
+                const response = await fetch(`https://callsystem-production.up.railway.app:3036/tickets`, {
                     method: 'GET',
                     headers: { 
                         'content-type': 'application/json',
@@ -69,7 +66,7 @@ function GerenciarChamados( {role}: adminPageProps ){
 
         try {
             setIdAtualizando(id); // Ativa o loading específico deste botão/card
-            const response = await fetch(`${apiUrl}/tickets/${id}`, {
+            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
                 method: "PUT",
                 headers: {
                     "content-type" : "application/json",

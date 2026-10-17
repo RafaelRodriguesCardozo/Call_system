@@ -13,9 +13,6 @@ function CriarUsuarios({role}: adminPageProps ){
     const [inputSenha, setInputSenha] = useState('');
     const [inputRole, setInputRole] = useState(role);
 
-    const apiUrl = "https://callsystem-production.up.railway.app:3036";
-    //const localApi = "http://localhost";
-
     // Ao executar cria um usuário
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -24,7 +21,7 @@ function CriarUsuarios({role}: adminPageProps ){
 
             const token = localStorage.getItem('token');
 
-            const response = await fetch(`${apiUrl}/register`, {
+            const response = await fetch(`https://callsystem-production.up.railway.app/register`, {
                 method: 'POST',
                 headers: {
                     'content-type' : 'application/json',

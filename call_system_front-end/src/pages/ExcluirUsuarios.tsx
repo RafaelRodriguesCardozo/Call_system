@@ -15,9 +15,6 @@ function ExcluirUsuarios({role}: adminPageProps ){
     const [listaUser, setListaUser] = useState<USER[]>([]);
     const [erro, setErro] = useState('');
 
-    const apiUrl = "https://callsystem-production.up.railway.app:3036";
-    //const localApi = "http://localhost";
-
     // Dá a opção de deletar um ou mais usuários específicos quando se tem o cadastro de administrador
     const deleteUser = async (id: number, nome: string) =>{
         if (!window.confirm(`Deseja realmente deletar o Usuário: "${nome}" (ID #${id})?`)) {
@@ -27,7 +24,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
         const token = localStorage.getItem('token');
 
         try{
-            const response = await fetch(`${apiUrl}/register/${id}`, {
+            const response = await fetch(`https://callsystem-production.up.railway.app/register/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'content-type' : 'application/json',
@@ -54,7 +51,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
 
                 const token = localStorage.getItem('token');
 
-                const response = await fetch(`${apiUrl}/register`, {
+                const response = await fetch(`https://callsystem-production.up.railway.app/register`, {
                     method: 'GET',
                     headers: {
                         'content-type' : 'application/json',
