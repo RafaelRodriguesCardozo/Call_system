@@ -50,7 +50,7 @@ function CriarChamado({userId}: criarChamadoProps) {
             const data = await response.json();
             
             if(response.ok){
-                alert('cahamado criado com sucesso');
+                alert('chamado criado com sucesso');
                 console.log(data.mensagem);
             }
         }catch(err){

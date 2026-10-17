@@ -186,7 +186,7 @@ function GerenciarChamados( {role}: adminPageProps ){
                                 {/* Botão de deletar individual para cada chamado */}
                                 <button 
                                     onClick={() => deletarTicket(ticket.TICKETID)} 
-                                    className="btn btn-danger btn-sm rounded"
+                                    className="btn btn-danger text-nowrap rounded"
                                 >
                                     Excluir
                                 </button>
