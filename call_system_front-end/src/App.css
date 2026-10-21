@@ -1,17 +1,58 @@
-html, body, #root {
+:root {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: #17243a;
+  background: #111a35;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
   margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
 }
 
-/* Esconde a barra de rolagem no Chrome, Safari e Opera */
-::-webkit-scrollbar {
-  display: none;
+body {
+  min-height: 100vh;
 }
 
-/* Esconde a barra de rolagem no Firefox e IE/Edge */
-html, body {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE e Edge */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(151, 139, 255, 0.85);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: #c4c1ff;
+  color: #171943;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

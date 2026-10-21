@@ -15,18 +15,17 @@ function ConsultarChamado() {
     const [erro, setErro] = useState('');
     const [carregando, setCarregando] = useState(true);
 
-    // Deixa cada prioridade com uma cor de destaque.
     const classePrioridade = (prioridade: string) => {
         switch (prioridade.trim().toLowerCase()) {
             case 'baixa':
-                return 'bg-success';
+                return 'ticket-badge ticket-badge-low';
             case 'media':
             case 'média':
-                return 'bg-warning text-dark';
+                return 'ticket-badge ticket-badge-medium';
             case 'alta':
-                return 'bg-danger';
+                return 'ticket-badge ticket-badge-high';
             default:
-                return 'bg-secondary';
+                return 'ticket-badge ticket-badge-neutral';
         }
     };
 
@@ -84,40 +83,53 @@ function ConsultarChamado() {
     }, []);
 
     return (
-        <div className="container mt-4">
-            <h3 className="mb-3 text-center">Lista de Chamados</h3>
-            
-            {erro && <div className="alert alert-danger">{erro}</div>}
+        <div className="page-container">
+            <header className="page-heading page-heading-row">
+                <div>
+                    <span className="page-eyebrow">Acompanhamento</span>
+                    <h1>Seus chamados</h1>
+                    <p>Acompanhe as solicitações registradas e seus detalhes.</p>
+                </div>
+                {!carregando && !erro && (
+                    <span className="page-count">{listaChamados.length} {listaChamados.length === 1 ? 'chamado' : 'chamados'}</span>
+                )}
+            </header>
 
-            {/* SE ESTIVER A CARREGAR, EXibe O SPINNER DO BOOTSTRAP */}
+            {erro && <div className="page-alert page-alert-error" role="alert">{erro}</div>}
+
             {carregando ? (
-                <div className="text-center my-5">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="text-white visually-hidden ">Carregando...</span>
-                    </div>
-                    <p className="text-white mt-2 ">A carregar chamados...</p>
+                <div className="page-state" role="status" aria-live="polite">
+                    <span className="page-spinner" aria-hidden="true" />
+                    <strong>Carregando chamados</strong>
+                    <span>Estamos buscando suas solicitações.</span>
                 </div>
             ) : listaChamados.length === 0 && !erro ? (
-                    <p className="text-center text-light fw-bold link-underline-info">Nenhum chamado encontrado.</p>
-                ) : (
-                    <div className="list-group">
-                        {listaChamados.map((ticket) => (
-                            <div key={ticket.TICKETID} className="list-group-item list-group-item-action mb-3 shadow-sm rounded">
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <h5 className="mb-1 text-primary">{ticket.TITLE}</h5>
-                                    <div className="d-flex gap-2 align-items-center">
-                                        <small className={`badge ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</small>
-                                        <small className="badge bg-secondary">Status: {ticket.STATUS}</small>
-                                        <small className="badge bg-secondary">Criação: {formatarData(ticket.DATA_CRIACAO)}</small>
-                                    </div>
+                <div className="page-state">
+                    <span className="page-state-icon" aria-hidden="true">▤</span>
+                    <strong>Nenhum chamado encontrado</strong>
+                    <span>Quando houver solicitações, elas aparecerão aqui.</span>
+                </div>
+            ) : (
+                <section className="ticket-list" aria-label="Lista de chamados">
+                    {listaChamados.map((ticket) => (
+                        <article key={ticket.TICKETID} className="ticket-card">
+                            <div className="ticket-card-top">
+                                <div>
+                                    <span className="ticket-id">Chamado #{ticket.TICKETID}</span>
+                                    <h2>{ticket.TITLE}</h2>
                                 </div>
-
-                                <p className="mb-1 text-break mt-2">{ticket.DESCRIPTION}</p>
-                                <small className="text-muted">ID do Chamado: #{ticket.TICKETID} | Usuário: {ticket.USERID}</small>
+                                <span className={classePrioridade(ticket.PRIORIDADE)}>{ticket.PRIORIDADE}</span>
                             </div>
-                        ))}
-                    </div>
-                )}
+                            <p className="ticket-description">{ticket.DESCRIPTION}</p>
+                            <div className="ticket-card-footer">
+                                <span className="ticket-status"><span aria-hidden="true" />{ticket.STATUS}</span>
+                                <span>Aberto em {formatarData(ticket.DATA_CRIACAO)}</span>
+                                <span>Usuário #{ticket.USERID}</span>
+                            </div>
+                        </article>
+                    ))}
+                </section>
+            )}
         </div>
     );
 }

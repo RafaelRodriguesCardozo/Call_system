@@ -78,32 +78,55 @@ function ExcluirUsuarios({role}: adminPageProps ){
 
 
     return (
-        <div className="mt-5">
-            {/* Seção de exclusão de usuário */}
-            <div>
+        <div className="page-container">
+            <header className="page-heading">
+                <span className="page-eyebrow">Administração</span>
+                <h1>Usuários</h1>
+                <p>Consulte as contas cadastradas e remova acessos quando necessário.</p>
+            </header>
 
-                {/* Se houver erro ao carregar os usuários ele renderiza o alerta, se não mostra o texto informativo */}
-                {erro === "Não foi possível conectar ao servidor." ? (
-                    <div>{erro && <div className="alert alert-danger text-center">{erro}</div>}</div>
-                ) : (<div><h5 className="text-info p-2 text-center">somente o {role} pode excluir um usuário</h5></div>)}
-                
-                {/* Renderiza todos os usuários criados */}
-                {listaUser.map((user) => (
-                    <ul key={user.USERID} className="list-group mb-3">
-                        <li className="list-group-item text-black d-flex justify-content-between">
-                            <div>
-                                <div className=" fw-bolder text-uppercase">{user.USERNOME} <small className="badge bg-secondary">{user.ROLE}</small></div>
-                                <div>{user.USEREMAIL}</div>
+            {erro ? (
+                <div className="page-alert page-alert-error" role="alert">{erro}</div>
+            ) : (
+                <p className="page-permission-note">
+                    <span aria-hidden="true">盾</span>
+                    Ação restrita ao perfil <strong>{role}</strong>
+                </p>
+            )}
+
+            {listaUser.length === 0 && !erro ? (
+                <div className="page-state">
+                    <span className="page-state-icon" aria-hidden="true">♙</span>
+                    <strong>Nenhum usuário encontrado</strong>
+                    <span>Os usuários cadastrados serão exibidos nesta lista.</span>
+                </div>
+            ) : (
+                <section className="user-list" aria-label="Usuários cadastrados">
+                    {listaUser.map((user) => (
+                        <article key={user.USERID} className="user-card">
+                            <span className="user-avatar" aria-hidden="true">
+                                {user.USERNOME.charAt(0).toUpperCase()}
+                            </span>
+                            <div className="user-card-details">
+                                <h2>{user.USERNOME}</h2>
+                                <p>{user.USEREMAIL}</p>
+                                <span className={`user-role${user.ROLE === 'ADMIN' ? ' user-role-admin' : ''}`}>
+                                    {user.ROLE === 'ADMIN' ? 'Administrador' : 'Cliente'}
+                                </span>
                             </div>
-                            <div className="d-flex justify-content-end">
-                                <button onClick={() => deleteUser(user.USERID, user.USERNOME)} className="btn btn-danger">Excluir</button>
-                            </div>
-                        </li>
-                    </ul>
-                ))}
-            </div>
+                            <button
+                                type="button"
+                                onClick={() => deleteUser(user.USERID, user.USERNOME)}
+                                className="page-button page-button-danger"
+                                aria-label={`Excluir usuário ${user.USERNOME}`}
+                            >
+                                Excluir
+                            </button>
+                        </article>
+                    ))}
+                </section>
+            )}
         </div>
-
     )
 }
 

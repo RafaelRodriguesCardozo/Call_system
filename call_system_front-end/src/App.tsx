@@ -1,14 +1,15 @@
 import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
 import CriarChamado from './pages/CriarChamados';
 import ConsultarChamado from './pages/ConsultarChamados';
 import ExcluirUsuarios from './pages/ExcluirUsuarios';
 import CriarUsuarios from './pages/CriarUsuarios';
 import GerenciarChamados from './pages/GerenciarChamados';
-import { Navigate, Link, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Navigate, NavLink, BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
-import Container from 'react-bootstrap/Container'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'
+import './App.css';
+import './pages/Pages.css';
 
 interface Usuario {
   id: number;
@@ -21,46 +22,69 @@ interface Usuario {
 function App() {
   const [usuarioLogado, setUsuarioLogado] = useState <Usuario | null> (null);
 
-  // Verifica se o usuário fez login, se sim, renderiza a tela do sistema, caso não, permanece na tela de login ou registro.
   if(usuarioLogado){
     return(
-          <Container fluid className=" bg-primary-subtle text-white min-vh-100 m-0 p-0">
-        <div className='d-flex justify-content-between'>
-          {/* Informações do Usuário */}
-          <div className='d-flex gap-2 m-2 align-items-center' id='userinfo'>
-            <small className="badge bg-secondary" >Usuário: {usuarioLogado.nome}</small>
-            <small className="badge bg-secondary" >Tipo: {usuarioLogado.role}</small>
-          </div>
+      <div className="app-shell">
+        <BrowserRouter>
+          <header className="app-topbar">
+            <div className="app-topbar-inner">
+              <NavLink to="/" className="app-brand" aria-label="Central de suporte, início">
+                <span className="app-brand-mark" aria-hidden="true">C</span>
+                <span>
+                  <strong>Central de suporte</strong>
+                  <small>Atendimento e solicitações</small>
+                </span>
+              </NavLink>
 
-          {/* Botão de deslogar */}
-          <div className='d-flex justify-content-end'>
-            <button onClick={() => setUsuarioLogado(null)} className='btn btn-danger m-2'>sair</button>
-          </div>
-        </div>
-
-        <div className='container text-light bg-dark bg-gradient rounded-4 shadow p-4'>
-          <BrowserRouter>
-
-            <div className='d-flex gap-3 justify-content-center p-3'>
-              
-              {/* Rotas gerais qualquer role pode acessar */}
-              <Link to='/' className='btn btn-primary'>Criar Chamados</Link>
-              <Link to='/tickets' className='btn btn-primary'>Consultar Chamados</Link>
-
-              {/* Rotas que só podem ter acesso caso o usuário for Administrador */}
-              {usuarioLogado.role == 'ADMIN' && (
-                <Link to='/gerenciarChamados' className='btn btn-primary'>Gerenciar Chamados</Link>
-              )}
-              {usuarioLogado.role == 'ADMIN' && (
-                <Link to='/criarUser' className='btn btn-primary'>Criar usuários</Link>
-              )}
-              {usuarioLogado.role === 'ADMIN' && (
-                <Link to='/excluirUser' className='btn btn-danger'>Excluir Usuários</Link>  
-              )}
-              
+              <div className="app-account">
+                <span className="app-avatar" aria-hidden="true">
+                  {usuarioLogado.nome.trim().charAt(0).toUpperCase()}
+                </span>
+                <span className="app-account-details">
+                  <strong>{usuarioLogado.nome}</strong>
+                  <small>{usuarioLogado.role === 'ADMIN' ? 'Administrador' : 'Cliente'}</small>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setUsuarioLogado(null)}
+                  className="app-logout"
+                  aria-label="Sair da conta"
+                >
+                  Sair
+                </button>
+              </div>
             </div>
-            
-            <div className='p-3'>
+          </header>
+
+          <div className="app-content">
+            <nav className="app-navigation" aria-label="Navegação principal">
+              <NavLink to="/" end className={({ isActive }) => `app-nav-link${isActive ? ' is-active' : ''}`}>
+                <span aria-hidden="true">＋</span>
+                Abrir chamado
+              </NavLink>
+              <NavLink to="/tickets" className={({ isActive }) => `app-nav-link${isActive ? ' is-active' : ''}`}>
+                <span aria-hidden="true">▤</span>
+                Consultar chamados
+              </NavLink>
+              {usuarioLogado.role === 'ADMIN' && (
+                <>
+                  <NavLink to="/gerenciarChamados" className={({ isActive }) => `app-nav-link${isActive ? ' is-active' : ''}`}>
+                    <span aria-hidden="true">◷</span>
+                    Gerenciar chamados
+                  </NavLink>
+                  <NavLink to="/criarUser" className={({ isActive }) => `app-nav-link${isActive ? ' is-active' : ''}`}>
+                    <span aria-hidden="true">＋</span>
+                    Criar usuário
+                  </NavLink>
+                  <NavLink to="/excluirUser" className={({ isActive }) => `app-nav-link${isActive ? ' is-active' : ''}`}>
+                    <span aria-hidden="true">−</span>
+                    Usuários
+                  </NavLink>
+                </>
+              )}
+            </nav>
+
+            <main className="app-main">
               <Routes>
                 <Route path='/' element={<CriarChamado userId={usuarioLogado.id} />}/>
                 <Route path='/excluirUser' element={<ExcluirUsuarios role={usuarioLogado.role}/>}/>
@@ -69,23 +93,20 @@ function App() {
                 <Route path='/tickets' element={<ConsultarChamado />}/>
                 <Route path='*' element={<Navigate to='/' />}/>
               </Routes>
-            </div>
-          </BrowserRouter>
-        </div>
-      </Container>
+            </main>
+          </div>
+        </BrowserRouter>
+      </div>
     )
   }
 
-  // Rotas Telas de login e registro de usuário.
   return (
-    <div>
+    <div className="app-shell app-shell-auth">
       <BrowserRouter>
-        <nav className='d-flex gap-2 m-3'>
-          <Link to='/login' className='btn btn-outline-primary'>Fazer login</Link>
-        </nav>
         <Routes>
           <Route path='/' element={<LoginPage onLoginSuccess={setUsuarioLogado}/>}/>
           <Route path='/login' element={<LoginPage onLoginSuccess={setUsuarioLogado}/>}/>
+          <Route path='/register' element={<RegisterPage/>}/>
           <Route path='*' element={<Navigate to='/'/>}/>
         </Routes>
       </BrowserRouter>

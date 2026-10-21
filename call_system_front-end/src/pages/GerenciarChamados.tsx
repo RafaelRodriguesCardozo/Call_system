@@ -131,69 +131,92 @@ function GerenciarChamados( {role}: adminPageProps ){
     };
 
     return(
-        <div className="container mt-4">
-            {erro && <p className="bg-danger fw-bold text-white p-2 rounded">{erro}</p>}
-            <h5 className="text-info text-center p-2">Somente o {role} pode atualizar o status do chamado</h5>
-            {/* Se estiver carregando exibe o spinner */}
+        <div className="page-container">
+            <header className="page-heading page-heading-row">
+                <div>
+                    <span className="page-eyebrow">Painel administrativo</span>
+                    <h1>Gerenciar chamados</h1>
+                    <p>Atualize o andamento das solicitações e mantenha a fila organizada.</p>
+                </div>
+                {!carregando && !erro && (
+                    <span className="page-count">{listaChamados.length} {listaChamados.length === 1 ? 'chamado' : 'chamados'}</span>
+                )}
+            </header>
+
+            {erro && <div className="page-alert page-alert-error" role="alert">{erro}</div>}
+            <p className="page-permission-note">
+                <span aria-hidden="true">i</span>
+                Ações administrativas disponíveis para <strong>{role}</strong>
+            </p>
+
             {carregando ? (
-                <div className="text-center my-5">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="text-white visually-hidden ">Carregando...</span>
-                    </div>
-                    <p className="text-white mt-2 ">A carregar chamados...</p>
+                <div className="page-state" role="status" aria-live="polite">
+                    <span className="page-spinner" aria-hidden="true" />
+                    <strong>Carregando chamados</strong>
+                    <span>Estamos buscando as solicitações cadastradas.</span>
                 </div>
             ) : listaChamados.length === 0 && !erro ? (
-                <p className="text-center text-muted fw-bold">Nenhum chamado encontrado.</p>
+                <div className="page-state">
+                    <span className="page-state-icon" aria-hidden="true">▤</span>
+                    <strong>Nenhum chamado encontrado</strong>
+                    <span>Os novos chamados aparecerão aqui.</span>
+                </div>
             ) : (
-                <div className="list-group">
+                <section className="ticket-list" aria-label="Chamados para gerenciamento">
                     {listaChamados.map((ticket) => (
-                        <div key={ticket.TICKETID} className="list-group-item list-group-item-action mb-3 shadow-sm rounded">
-                            <h5 className="mb-1 text-primary">{ticket.TITLE}</h5>
-                            <p className="mb-1 text-muted">{ticket.DESCRIPTION}</p>
-                            <small className="badge bg-secondary mb-2">Status atual: {ticket.STATUS}</small>
-                            <small className="text-muted">{ticket.role}</small>
-                            
-                            {/* Atualiza o estado do chamado (aberto, em andamento ou finalizado) */}
-                            <div className="d-flex gap-2 align-items-center mt-2">
-                                <select 
-                                    id={`status-${ticket.TICKETID}`}
-                                    className="form-select w-auto"
-                                    value={statusSelecionados[ticket.TICKETID] !== undefined ? statusSelecionados[ticket.TICKETID] : ticket.STATUS}
-                                    onChange={(e) => setStatusSelecionados({
-                                        ...statusSelecionados,
-                                        [ticket.TICKETID]: e.target.value
-                                    })}
-                                >
-                                    <option value="ABERTO">ABERTO</option>
-                                    <option value="EM_ANDAMENTO">EM ANDAMENTO</option>
-                                    <option value="FINALIZADO">FINALIZADO</option>
-                                </select>
-
-                                {/* Botão para atualizar status do chamado */}
-                                <button 
+                        <article key={ticket.TICKETID} className="ticket-card">
+                            <div className="ticket-card-top">
+                                <div>
+                                    <span className="ticket-id">Chamado #{ticket.TICKETID}</span>
+                                    <h2>{ticket.TITLE}</h2>
+                                </div>
+                                <span className={`ticket-badge ${ticket.STATUS === 'FINALIZADO' ? 'ticket-badge-low' : 'ticket-badge-neutral'}`}>
+                                    {ticket.STATUS.replace('_', ' ')}
+                                </span>
+                            </div>
+                            <p className="ticket-description">{ticket.DESCRIPTION}</p>
+                            <div className="ticket-card-footer">
+                                <span>Solicitante: {ticket.USERNOME || `#${ticket.USERID}`}</span>
+                                <span>Prioridade: {ticket.PRIORIDADE}</span>
+                                <span>{ticket.role}</span>
+                            </div>
+                            <div className="ticket-admin-actions">
+                                <div className="page-field ticket-status-field">
+                                    <label htmlFor={`status-${ticket.TICKETID}`}>Atualizar status</label>
+                                    <select
+                                        id={`status-${ticket.TICKETID}`}
+                                        className="form-select"
+                                        value={statusSelecionados[ticket.TICKETID] !== undefined ? statusSelecionados[ticket.TICKETID] : ticket.STATUS}
+                                        onChange={(e) => setStatusSelecionados({
+                                            ...statusSelecionados,
+                                            [ticket.TICKETID]: e.target.value
+                                        })}
+                                    >
+                                        <option value="ABERTO">Aberto</option>
+                                        <option value="EM_ANDAMENTO">Em andamento</option>
+                                        <option value="FINALIZADO">Finalizado</option>
+                                    </select>
+                                </div>
+                                <button
                                     type="button"
-                                    className="btn btn-primary text-nowrap d-flex align-items-center gap-2"
+                                    className="page-button page-button-primary"
                                     onClick={() => mudarStatus(ticket.TICKETID)}
-                                    disabled={idAtualizando === ticket.TICKETID} // Desativa o botão enquanto salva
+                                    disabled={idAtualizando === ticket.TICKETID}
+                                    aria-busy={idAtualizando === ticket.TICKETID}
                                 >
-                                    {/* Se este botão específico está a carregar, mostra um mini spinner dentro dele */}
-                                    {idAtualizando === ticket.TICKETID && (
-                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    )}
-                                    {idAtualizando === ticket.TICKETID ? 'Salvando...' : 'Alterar status'}
+                                    {idAtualizando === ticket.TICKETID ? 'Salvando...' : 'Salvar status'}
                                 </button>
-
-                                {/* Botão de deletar individual para cada chamado */}
-                                <button 
-                                    onClick={() => deletarTicket(ticket.TICKETID)} 
-                                    className="btn btn-danger text-nowrap rounded"
+                                <button
+                                    type="button"
+                                    onClick={() => deletarTicket(ticket.TICKETID)}
+                                    className="page-button page-button-danger"
                                 >
-                                    Excluir
+                                    Excluir chamado
                                 </button>
                             </div>
-                        </div>
+                        </article>
                     ))}
-                </div>
+                </section>
             )}
         </div>
     );

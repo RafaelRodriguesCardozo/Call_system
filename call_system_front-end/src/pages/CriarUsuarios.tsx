@@ -51,67 +51,82 @@ function CriarUsuarios({role}: adminPageProps ){
     }
 
     return (
-        <div className="container mt-5 mb-5">
-            <h3 className="d-flex justify-content-center mb-5">SEÇÃO DE CRIAÇÃO DE USUÁRIOS</h3>
-            <form onSubmit={handleSubmit}>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+        <div className="page-container">
+            <header className="page-heading">
+                <span className="page-eyebrow">Administração</span>
+                <h1>Criar usuário</h1>
+                <p>Cadastre uma nova pessoa e configure o nível de acesso à plataforma.</p>
+            </header>
+            <section className="page-card page-form-card" aria-labelledby="create-user-title">
+                <div className="page-card-heading">
+                    <div>
+                        <h2 id="create-user-title">Dados da conta</h2>
+                        <p>Preencha as informações para criar o acesso.</p>
+                    </div>
+                    <span className="page-card-icon" aria-hidden="true">＋</span>
+                </div>
+                <form className="page-form" onSubmit={handleSubmit}>
+                    <div className="page-field">
+                        <label htmlFor="nome">Nome de usuário</label>
                         <input
-                            className="form-control form-control-sm"
-                            type="text" 
-                            id="nome" 
-                            placeholder="ex: usuario1"
+                            className="form-control"
+                            type="text"
+                            id="nome"
+                            name="name"
+                            placeholder="Nome completo"
+                            autoComplete="name"
                             value={inputUser}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputUser(e.target.value)}    
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputUser(e.target.value)}
+                            required
                         />
-                        <label htmlFor="nome">Nome de Usuário</label>
                     </div>
-                </div>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+                    <div className="page-field">
+                        <label htmlFor="email">E-mail</label>
                         <input
-                            className="form-control form-control-sm"
-                            type="email" 
-                            id="email" 
-                            placeholder="ex: 123@gmail.com"
+                            className="form-control"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="usuario@exemplo.com"
+                            autoComplete="email"
                             value={inputEmailUser}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}
+                            required
                         />
-                        <label htmlFor="email">Email</label>
                     </div>
-                </div>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5 ">
+                    <div className="page-field">
+                        <label htmlFor="senha">Senha</label>
                         <input
-                            className="form-control form-control-sm"
+                            className="form-control"
                             type="password"
                             id="senha"
-                            placeholder="ex: 12345"
+                            name="password"
+                            placeholder="Defina uma senha"
+                            autoComplete="new-password"
                             value={inputSenha}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
+                            required
                         />
-                        <label htmlFor="senha" className="float">Senha</label>
                     </div>
-                </div>
-                
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="col-sm-5 ">
+                    <div className="page-field">
+                        <label htmlFor="user-role">Perfil de acesso</label>
                         <select
+                            id="user-role"
+                            name="role"
                             className="form-select"
                             value={inputRole}
                             onChange={(e) => setInputRole(e.target.value)}
                         >
-                            <option value="CLIENTE" className=" text-success fw-bold">CLIENTE</option>
-                            <option value="ADMIN" className="text-danger fw-bold">ADMIN</option>
+                            <option value="CLIENTE">Cliente</option>
+                            <option value="ADMIN">Administrador</option>
                         </select>
+                        <small>Administradores podem gerenciar chamados e usuários.</small>
                     </div>
-
-                </div>
-
-                <div className="row g-3 d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary col-sm-3 ">Criar usuário</button>
-                </div>
-            </form>
+                    <div className="page-form-actions">
+                        <button type="submit" className="page-button page-button-primary">Criar usuário <span aria-hidden="true">→</span></button>
+                    </div>
+                </form>
+            </section>
         </div>
     )
 }

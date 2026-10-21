@@ -1,4 +1,5 @@
 import { useState} from "react";
+import { Link } from "react-router-dom";
 
 export interface Usuario {
     id?: number;
@@ -60,42 +61,56 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
         }
     }
 
-    return(
-        <div className="container mt-5">
-            <title>login</title>
-            <form onSubmit={handleSubmit}>
-                {erro && <div className="alert alert-danger">{erro}</div>}
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+    return (
+        <main className="auth-page">
+            <title>Entrar | Central de suporte</title>
+            <section className="auth-panel" aria-labelledby="login-title">
+                <div className="auth-brand-mark" aria-hidden="true">C</div>
+                <span className="page-eyebrow">Central de suporte</span>
+                <h1 id="login-title">Boas-vindas</h1>
+                <p className="auth-intro">Entre na sua conta para acompanhar suas solicitações.</p>
+
+                <form className="page-form" onSubmit={handleSubmit}>
+                    {erro && <div className="page-alert page-alert-error" role="alert">{erro}</div>}
+                    <div className="page-field">
+                        <label htmlFor="email">E-mail</label>
                         <input
                             className="form-control"
-                            type="text"
-                            id="email" 
-                            placeholder="ex: 123@gmail.com"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="voce@exemplo.com"
+                            autoComplete="email"
                             value={inputEmailUser}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}
+                            required
                         />
-                        <label htmlFor="email">Email</label>
                     </div>
-                </div>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+                    <div className="page-field">
+                        <label htmlFor="senha">Senha</label>
                         <input
                             className="form-control"
                             type="password"
                             id="senha"
-                            placeholder="ex: 12345"
+                            name="password"
+                            placeholder="Digite sua senha"
+                            autoComplete="current-password"
                             value={inputSenha}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
+                            required
                         />
-                        <label htmlFor="senha">Senha</label>
                     </div>
-                </div>
-                <div className="row g-3 d-flex justify-content-center mb-3">
-                    <button type="submit" className="btn btn-primary col-sm-3">entrar</button>
-                </div>
-            </form>
-        </div>
+                    <button type="submit" className="page-button page-button-primary">
+                        Entrar na plataforma
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+                <p className="auth-footnote">Acesso seguro à sua central de atendimento.</p>
+                <p className="auth-switch-link">
+                    Ainda não tem uma conta? <Link to="/register">Criar conta</Link>
+                </p>
+            </section>
+        </main>
     )
 }
 
