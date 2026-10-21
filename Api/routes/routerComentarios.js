@@ -101,7 +101,7 @@ router.delete('/tickets/:id/deleteComentario', verificarToken, (req,res) => {
             })
         }
 
-        return res.status(204).json({
+        return res.status(200).json({
             Mensagem: `O comentario com id: ${id} foi deletado com sucesso!`,
             results: results.affectedRows
         })

@@ -113,7 +113,7 @@ router.delete('/register/:id', verificarToken, (req,res) => {
             })
         }
 
-        return res.status(204).json({
+        return res.status(200).json({
             Mensagem: `O usuário com id: ${id} foi deletado com sucesso!`,
             userId: results.affectedRows 
         });
