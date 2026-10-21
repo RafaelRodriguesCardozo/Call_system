@@ -105,7 +105,7 @@ router.delete('/tickets/:id', verificarToken, (req,res) => {
             })
         }
 
-        return res.status(200).json({
+        return res.status(204).json({
             Mensagem: `O chamado com id: ${id} foi deletado com sucesso!`,
             results: results.affectedRows
         })
