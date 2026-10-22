@@ -1,0 +1,86 @@
+const { Router } = require('express');
+const router = Router();
+const conexao = require('../infraestrutura/conexao');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const rateLimit = require("express-rate-limit");
+
+// Configuração do Rate Limit corrigida
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutos
+    max: 100, // Limite de 100 requisições por IP
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    message: {
+        erro: 'Muitas requisições feitas a partir deste IP, tente novamente mais tarde.'
+    }
+});
+
+router.post('/login', limiter, (req, res) => {
+    const { useremail, userpassword } = req.body;
+
+    // Validação dos campos
+    if (!useremail || !userpassword) {
+        return res.status(400).json({ Erro: 'E-mail e senha são obrigatórios!' });
+    }
+
+    // Busca o usuário pelo e-mail no banco de dados
+    const sql = 'SELECT * FROM USERS WHERE USEREMAIL = ?';
+
+    conexao.query(sql, [useremail], async (err, results) => {
+        if (err) {
+            console.error("ERRO NO MYSQL:", err);
+            return res.status(500).json({ 
+                Erro: 'Erro interno no servidor.', 
+                detalhes: err.message 
+            });
+        }
+
+        // Verifica se o usuário existe
+        if (results.length === 0) {
+            return res.status(401).json({ Erro: 'E-mail ou senha incorretos.' });
+        }
+
+        const usuario = results[0];
+
+        try {
+            // Compara a senha digitada com a hash salva no banco
+            const senhaValida = await bcrypt.compare(userpassword, usuario.USERPASSWORD_HASH);
+
+            if (!senhaValida) {
+                return res.status(401).json({ Erro: 'E-mail ou senha incorretos.' });
+            }
+
+            const payload = {
+                id: usuario.USERID,
+                nome: usuario.USERNOME,
+                email: usuario.USEREMAIL,
+                role: usuario.ROLE
+            };
+
+            // Certifique-se de que a variável JWT_SECRET existe no Railway!
+            if (!process.env.JWT_SECRET) {
+                console.error("ERRO CRÍTICO: JWT_SECRET não está definida nas variáveis de ambiente!");
+                return res.status(500).json({ Erro: 'Erro de configuração do servidor (JWT_SECRET ausente).' });
+            }
+
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+            // Login bem-sucedido
+            return res.status(200).json({
+                mensagem: 'Login realizado com sucesso!',
+                token: token,
+                usuario: payload
+            });
+
+        } catch (error) {
+            console.error("ERRO NO TRY/CATCH DO LOGIN:", error);
+            return res.status(500).json({ 
+                Erro: 'Erro ao processar a autenticação.',
+                detalhes: error.message 
+            });
+        }
+    });
+});
+
+module.exports = router;
