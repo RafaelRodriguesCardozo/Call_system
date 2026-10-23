@@ -60,46 +60,46 @@ function CriarChamado({userId}: criarChamadoProps) {
     }
 
     return(
-        <div className="mb-4 container">
+        <main className="module-card">
             <title>Criar Chamados</title>
-            <div className="w-100 text-center mb-5">
-                <h1>Criar chamados</h1>
-                <p>crie um ticket para relatar seu problemalogo em seguida ele será visto e solucionado por um técnico</p>
+            <header className="page-heading">
+                <span className="eyebrow">Solicitações</span>
+                <h1>Criar chamado</h1>
+                <p>Descreva o problema e escolha a prioridade. A equipe poderá acompanhar sua solicitação.</p>
+            </header>
 
-            </div>
-
-            <form onSubmit={criarTicket} className="d-flex flex-column justify-content-center">
-                <div className="w-100 mb-3">
+            <form onSubmit={criarTicket} className="form-stack">
+                {Erro && <div className="feedback feedback-error" role="alert">{Erro}</div>}
+                <div className="field">
                     <div>
-                        {Erro && <div className="alert alert-danger">{Erro}</div>}
-                        <label htmlFor="titulo" className="form-label fw-bolder">Insira o Título</label>
+                        <label htmlFor="titulo">Título do chamado</label>
                         <input 
                             type="text"
-                            className="form-control"
-                            placeholder="Insira o titulo do chamado..."
+                            className="text-input"
+                            placeholder="Ex.: Não consigo acessar meu email"
                             id="titulo"
                             value={inputTitulo}
                             onChange={(e) => setInputTitulo(e.target.value)}    
                         />
                     </div>
                 </div>
-                <div className="w-100 mb-3">
+                <div className="field">
                     <div>
-                        <label htmlFor="descricao" className="form-label fw-bolder">Insira a descrição do chamado</label>
+                        <label htmlFor="descricao">Descreva o problema</label>
                         <textarea 
-                            className="form-control"
-                            placeholder="Descrição do chamado..."
+                            className="text-input text-area"
+                            placeholder="Conte o que aconteceu e o que você já tentou fazer."
                             id="descricao"
                             value={inputDescricao}
                             onChange={(e) => setInputDescricao(e.target.value)}
                         />
                     </div>                 
                 </div>
-                <div className="w-100 mb-3">
+                <div className="field">
                     <div>
-                        <label htmlFor="prioridade" className="form-label fw-bolder">Selecione a prioridade</label>
-                        <select 
-                            className="form-select mb-3" 
+                        <label htmlFor="prioridade">Prioridade</label>
+                        <select
+                            className="text-input"
                             id="prioridade"
                             value={inputPrioridade}
                             onChange={(e) => setInputPrioridade(e.target.value)}
@@ -111,9 +111,9 @@ function CriarChamado({userId}: criarChamadoProps) {
                     </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary">Criar chamado</button>
+                <button type="submit" className="button button-primary">Enviar chamado</button>
             </form>
-        </div>
+        </main>
     )
 }
 

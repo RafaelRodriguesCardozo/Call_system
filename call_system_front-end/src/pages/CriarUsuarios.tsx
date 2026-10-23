@@ -51,68 +51,72 @@ function CriarUsuarios({role}: adminPageProps ){
     }
 
     return (
-        <div className="container mt-5 mb-5">
-            <h3 className="d-flex justify-content-center mb-5">SEÇÃO DE CRIAÇÃO DE USUÁRIOS</h3>
-            <form onSubmit={handleSubmit}>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+        <main className="module-card">
+            <header className="page-heading">
+                <span className="eyebrow">Administração</span>
+                <h1>Criar usuário</h1>
+                <p>Cadastre uma pessoa e defina se ela terá acesso de cliente ou administrador.</p>
+            </header>
+            <form onSubmit={handleSubmit} className="form-stack">
+                <div className="field">
+                    <div>
+                        <label htmlFor="nome">Nome de usuário</label>
                         <input
-                            className="form-control form-control-sm"
+                            className="text-input"
                             type="text" 
                             id="nome" 
-                            placeholder="ex: usuario1"
+                            placeholder="Ex.: Maria Silva"
                             value={inputUser}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputUser(e.target.value)}    
                         />
-                        <label htmlFor="nome">Nome de Usuário</label>
                     </div>
                 </div>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+                <div className="field">
+                    <div>
+                        <label htmlFor="email">Email</label>
                         <input
-                            className="form-control form-control-sm"
+                            className="text-input"
                             type="email" 
                             id="email" 
-                            placeholder="ex: 123@gmail.com"
+                            placeholder="nome@email.com"
                             value={inputEmailUser}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
                         />
-                        <label htmlFor="email">Email</label>
                     </div>
                 </div>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5 ">
+                <div className="field">
+                    <div>
+                        <label htmlFor="senha">Senha</label>
                         <input
-                            className="form-control form-control-sm"
+                            className="text-input"
                             type="password"
                             id="senha"
-                            placeholder="ex: 12345"
+                            placeholder="Defina uma senha"
                             value={inputSenha}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
                         />
-                        <label htmlFor="senha" className="float">Senha</label>
                     </div>
                 </div>
                 
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="col-sm-5 ">
+                <div className="field">
+                    <div>
+                        <label htmlFor="role">Tipo de acesso</label>
                         <select
-                            className="form-select"
+                            className="text-input"
+                            id="role"
                             value={inputRole}
                             onChange={(e) => setInputRole(e.target.value)}
                         >
-                            <option value="CLIENTE" className=" text-success fw-bold">CLIENTE</option>
-                            <option value="ADMIN" className="text-danger fw-bold">ADMIN</option>
+                            <option value="CLIENTE">CLIENTE</option>
+                            <option value="ADMIN">ADMIN</option>
                         </select>
                     </div>
 
                 </div>
 
-                <div className="row g-3 d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary col-sm-3 ">Criar usuário</button>
-                </div>
+                <button type="submit" className="button button-primary">Criar usuário</button>
             </form>
-        </div>
+        </main>
     )
 }
 

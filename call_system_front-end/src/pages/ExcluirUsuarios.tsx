@@ -78,31 +78,33 @@ function ExcluirUsuarios({role}: adminPageProps ){
 
 
     return (
-        <div className="mt-5">
+        <main className="module-card">
             {/* Seção de exclusão de usuário */}
-            <div>
+            <header className="page-heading">
+                <span className="eyebrow">Administração</span>
+                <h1>Gerenciar usuários</h1>
+                <p>Consulte as contas cadastradas e remova um usuário quando necessário.</p>
+            </header>
 
                 {/* Se houver erro ao carregar os usuários ele renderiza o alerta, se não mostra o texto informativo */}
                 {erro === "Não foi possível conectar ao servidor." ? (
-                    <div>{erro && <div className="alert alert-danger text-center">{erro}</div>}</div>
-                ) : (<div><h5 className="text-info p-2 text-center">somente o {role} pode excluir um usuário</h5></div>)}
+                    <div>{erro && <div className="feedback feedback-error" role="alert">{erro}</div>}</div>
+                ) : (<p className="permission-note">Somente o perfil {role} pode excluir usuários.</p>)}
                 
                 {/* Renderiza todos os usuários criados */}
-                {listaUser.map((user) => (
-                    <ul key={user.USERID} className="list-group mb-3">
-                        <li className="list-group-item text-black d-flex justify-content-between">
-                            <div>
-                                <div className=" fw-bolder text-uppercase">{user.USERNOME} <small className="badge bg-secondary">{user.ROLE}</small></div>
-                                <div>{user.USEREMAIL}</div>
+                <ul className="user-list">
+                    {listaUser.map((user) => (
+                        <li key={user.USERID} className="user-card">
+                            <div className="user-details">
+                                <strong>{user.USERNOME}</strong>
+                                <span className="status-pill status-neutral">{user.ROLE}</span>
+                                <span>{user.USEREMAIL}</span>
                             </div>
-                            <div className="d-flex justify-content-end">
-                                <button onClick={() => deleteUser(user.USERID, user.USERNOME)} className="btn btn-danger">Excluir</button>
-                            </div>
+                            <button onClick={() => deleteUser(user.USERID, user.USERNOME)} className="button button-danger">Excluir</button>
                         </li>
-                    </ul>
-                ))}
-            </div>
-        </div>
+                    ))}
+                </ul>
+        </main>
 
     )
 }

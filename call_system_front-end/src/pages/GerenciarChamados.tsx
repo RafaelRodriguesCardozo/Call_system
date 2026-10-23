@@ -131,33 +131,41 @@ function GerenciarChamados( {role}: adminPageProps ){
     };
 
     return(
-        <div className="container mt-4">
-            {erro && <p className="bg-danger fw-bold text-white p-2 rounded">{erro}</p>}
-            <h5 className="text-info text-center p-2">Somente o {role} pode atualizar o status do chamado</h5>
+        <main className="module-card">
+            <header className="page-heading">
+                <span className="eyebrow">Administração</span>
+                <h1>Gerenciar chamados</h1>
+                <p>Atualize o andamento das solicitações ou remova chamados que não são mais necessários.</p>
+            </header>
+            {erro && <p className="feedback feedback-error" role="alert">{erro}</p>}
+            <p className="permission-note">Somente o perfil {role} pode atualizar o status dos chamados.</p>
             {/* Se estiver carregando exibe o spinner */}
             {carregando ? (
-                <div className="text-center my-5">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="text-white visually-hidden ">Carregando...</span>
-                    </div>
-                    <p className="text-white mt-2 ">A carregar chamados...</p>
+                <div className="loading-state" role="status">
+                    <span className="loading-spinner" aria-hidden="true"></span>
+                    <span>Carregando chamados...</span>
                 </div>
             ) : listaChamados.length === 0 && !erro ? (
-                <p className="text-center text-muted fw-bold">Nenhum chamado encontrado.</p>
+                <div className="empty-state">
+                    <h2>Nenhum chamado encontrado</h2>
+                    <p>Quando houver solicitações, elas aparecerão aqui para gerenciamento.</p>
+                </div>
             ) : (
-                <div className="list-group">
+                <div className="ticket-list">
                     {listaChamados.map((ticket) => (
-                        <div key={ticket.TICKETID} className="list-group-item list-group-item-action mb-3 shadow-sm rounded">
-                            <h5 className="mb-1 text-primary">{ticket.TITLE}</h5>
-                            <p className="mb-1 text-muted">{ticket.DESCRIPTION}</p>
-                            <small className="badge bg-secondary mb-2">Status atual: {ticket.STATUS}</small>
-                            <small className="text-muted">{ticket.role}</small>
+                        <article key={ticket.TICKETID} className="ticket-card">
+                            <h2>{ticket.TITLE}</h2>
+                            <p className="ticket-description">{ticket.DESCRIPTION}</p>
+                            <div className="ticket-meta">
+                                <span className="status-pill status-neutral">Status atual: {ticket.STATUS}</span>
+                                <span className="ticket-reference">{ticket.role}</span>
+                            </div>
                             
                             {/* Atualiza o estado do chamado (aberto, em andamento ou finalizado) */}
-                            <div className="d-flex gap-2 align-items-center mt-2">
+                            <div className="ticket-actions">
                                 <select 
                                     id={`status-${ticket.TICKETID}`}
-                                    className="form-select w-auto"
+                                    className="text-input status-select"
                                     value={statusSelecionados[ticket.TICKETID] !== undefined ? statusSelecionados[ticket.TICKETID] : ticket.STATUS}
                                     onChange={(e) => setStatusSelecionados({
                                         ...statusSelecionados,
@@ -172,13 +180,13 @@ function GerenciarChamados( {role}: adminPageProps ){
                                 {/* Botão para atualizar status do chamado */}
                                 <button 
                                     type="button"
-                                    className="btn btn-primary text-nowrap d-flex align-items-center gap-2"
+                                    className="button button-primary"
                                     onClick={() => mudarStatus(ticket.TICKETID)}
                                     disabled={idAtualizando === ticket.TICKETID} // Desativa o botão enquanto salva
                                 >
                                     {/* Se este botão específico está a carregar, mostra um mini spinner dentro dele */}
                                     {idAtualizando === ticket.TICKETID && (
-                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        <span className="loading-spinner loading-spinner-small" role="status" aria-label="Salvando"></span>
                                     )}
                                     {idAtualizando === ticket.TICKETID ? 'Salvando...' : 'Alterar status'}
                                 </button>
@@ -186,16 +194,16 @@ function GerenciarChamados( {role}: adminPageProps ){
                                 {/* Botão de deletar individual para cada chamado */}
                                 <button 
                                     onClick={() => deletarTicket(ticket.TICKETID)} 
-                                    className="btn btn-danger text-nowrap rounded"
+                                    className="button button-danger"
                                 >
                                     Excluir
                                 </button>
                             </div>
-                        </div>
+                        </article>
                     ))}
                 </div>
             )}
-        </div>
+        </main>
     );
 }
 

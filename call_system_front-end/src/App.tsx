@@ -6,8 +6,6 @@ import CriarUsuarios from './pages/CriarUsuarios';
 import GerenciarChamados from './pages/GerenciarChamados';
 import { Navigate, Link, BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
-import Container from 'react-bootstrap/Container'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 
 interface Usuario {
@@ -24,43 +22,41 @@ function App() {
   // Verifica se o usuário fez login, se sim, renderiza a tela do sistema, caso não, permanece na tela de login ou registro.
   if(usuarioLogado){
     return(
-          <Container fluid className=" bg-primary-subtle text-white min-vh-100 m-0 p-0">
-        <div className='d-flex justify-content-between'>
+      <div className="app-shell">
+        <header className="app-header">
           {/* Informações do Usuário */}
-          <div className='d-flex gap-2 m-2 align-items-center' id='userinfo'>
-            <small className="badge bg-secondary" >Usuário: {usuarioLogado.nome}</small>
-            <small className="badge bg-secondary" >Tipo: {usuarioLogado.role}</small>
+          <div className="user-info" id="userinfo">
+            <small className="user-chip">Usuário: {usuarioLogado.nome}</small>
+            <small className="user-chip user-chip-role">Tipo: {usuarioLogado.role}</small>
           </div>
 
           {/* Botão de deslogar */}
-          <div className='d-flex justify-content-end'>
-            <button onClick={() => setUsuarioLogado(null)} className='btn btn-danger m-2'>sair</button>
-          </div>
-        </div>
+          <button onClick={() => setUsuarioLogado(null)} className="button button-danger">Sair</button>
+        </header>
 
-        <div className='container text-light bg-dark bg-gradient rounded-4 shadow p-4'>
+        <main className="app-content">
           <BrowserRouter>
 
-            <div className='d-flex gap-3 justify-content-center p-3'>
+            <nav className="module-nav" aria-label="Módulos do sistema">
               
               {/* Rotas gerais qualquer role pode acessar */}
-              <Link to='/' className='btn btn-primary'>Criar Chamados</Link>
-              <Link to='/tickets' className='btn btn-primary'>Consultar Chamados</Link>
+              <Link to="/" className="nav-link">Criar chamados</Link>
+              <Link to="/tickets" className="nav-link">Consultar chamados</Link>
 
               {/* Rotas que só podem ter acesso caso o usuário for Administrador */}
               {usuarioLogado.role == 'ADMIN' && (
-                <Link to='/gerenciarChamados' className='btn btn-primary'>Gerenciar Chamados</Link>
+                <Link to="/gerenciarChamados" className="nav-link">Gerenciar chamados</Link>
               )}
               {usuarioLogado.role == 'ADMIN' && (
-                <Link to='/criarUser' className='btn btn-primary'>Criar usuários</Link>
+                <Link to="/criarUser" className="nav-link">Criar usuários</Link>
               )}
               {usuarioLogado.role === 'ADMIN' && (
-                <Link to='/excluirUser' className='btn btn-danger'>Excluir Usuários</Link>  
+                <Link to="/excluirUser" className="nav-link nav-link-danger">Excluir usuários</Link>
               )}
               
-            </div>
+            </nav>
             
-            <div className='p-3'>
+            <div className="module-content">
               <Routes>
                 <Route path='/' element={<CriarChamado userId={usuarioLogado.id} />}/>
                 <Route path='/excluirUser' element={<ExcluirUsuarios role={usuarioLogado.role}/>}/>
@@ -71,17 +67,17 @@ function App() {
               </Routes>
             </div>
           </BrowserRouter>
-        </div>
-      </Container>
+        </main>
+      </div>
     )
   }
 
   // Rotas Telas de login e registro de usuário.
   return (
-    <div>
+    <div className="public-shell">
       <BrowserRouter>
-        <nav className='d-flex gap-2 m-3'>
-          <Link to='/login' className='btn btn-outline-primary'>Fazer login</Link>
+        <nav className="public-nav" aria-label="Acesso">
+          <Link to="/login" className="button button-secondary">Fazer login</Link>
         </nav>
         <Routes>
           <Route path='/' element={<LoginPage onLoginSuccess={setUsuarioLogado}/>}/>

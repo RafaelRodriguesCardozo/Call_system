@@ -19,14 +19,14 @@ function ConsultarChamado() {
     const classePrioridade = (prioridade: string) => {
         switch (prioridade.trim().toLowerCase()) {
             case 'baixa':
-                return 'bg-success';
+                return 'priority-low';
             case 'media':
             case 'média':
-                return 'bg-warning text-dark';
+                return 'priority-medium';
             case 'alta':
-                return 'bg-danger';
+                return 'priority-high';
             default:
-                return 'bg-secondary';
+                return 'priority-default';
         }
     };
 
@@ -84,41 +84,45 @@ function ConsultarChamado() {
     }, []);
 
     return (
-        <div className="container mt-4">
-            <h3 className="mb-3 text-center">Lista de Chamados</h3>
+        <main className="module-card">
+            <header className="page-heading">
+                <span className="eyebrow">Acompanhamento</span>
+                <h1>Consultar chamados</h1>
+                <p>Acompanhe o status, a prioridade e a data de abertura de cada solicitação.</p>
+            </header>
             
-            {erro && <div className="alert alert-danger">{erro}</div>}
+            {erro && <div className="feedback feedback-error" role="alert">{erro}</div>}
 
-            {/* SE ESTIVER A CARREGAR, EXibe O SPINNER DO BOOTSTRAP */}
             {carregando ? (
-                <div className="text-center my-5">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="text-white visually-hidden ">Carregando...</span>
-                    </div>
-                    <p className="text-white mt-2 ">A carregar chamados...</p>
+                <div className="loading-state" role="status">
+                    <span className="loading-spinner" aria-hidden="true"></span>
+                    <span>Carregando chamados...</span>
                 </div>
             ) : listaChamados.length === 0 && !erro ? (
-                    <p className="text-center text-light fw-bold link-underline-info">Nenhum chamado encontrado.</p>
-                ) : (
-                    <div className="list-group">
-                        {listaChamados.map((ticket) => (
-                            <div key={ticket.TICKETID} className="list-group-item list-group-item-action mb-3 shadow-sm rounded">
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <h5 className="mb-1 text-primary">{ticket.TITLE}</h5>
-                                    <div className="d-flex gap-2 align-items-center">
-                                        <small className={`badge ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</small>
-                                        <small className="badge bg-secondary">Status: {ticket.STATUS}</small>
-                                        <small className="badge bg-secondary">Criação: {formatarData(ticket.DATA_CRIACAO)}</small>
-                                    </div>
+                <div className="empty-state">
+                    <h2>Nenhum chamado encontrado</h2>
+                    <p>Quando houver solicitações, elas aparecerão aqui.</p>
+                </div>
+            ) : (
+                <div className="ticket-list">
+                    {listaChamados.map((ticket) => (
+                        <article key={ticket.TICKETID} className="ticket-card">
+                            <div className="ticket-heading">
+                                <h2>{ticket.TITLE}</h2>
+                                <div className="ticket-meta">
+                                    <span className={`status-pill ${classePrioridade(ticket.PRIORIDADE)}`}>Prioridade: {ticket.PRIORIDADE}</span>
+                                    <span className="status-pill status-neutral">Status: {ticket.STATUS}</span>
+                                    <span className="status-pill status-neutral">Criação: {formatarData(ticket.DATA_CRIACAO)}</span>
                                 </div>
-
-                                <p className="mb-1 text-break mt-2">{ticket.DESCRIPTION}</p>
-                                <small className="text-muted">ID do Chamado: #{ticket.TICKETID} | Usuário: {ticket.USERID}</small>
                             </div>
-                        ))}
-                    </div>
-                )}
-        </div>
+
+                            <p className="ticket-description">{ticket.DESCRIPTION}</p>
+                            <small className="ticket-reference">Chamado #{ticket.TICKETID} · Usuário {ticket.USERID}</small>
+                        </article>
+                    ))}
+                </div>
+            )}
+        </main>
     );
 }
 

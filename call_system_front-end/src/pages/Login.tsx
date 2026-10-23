@@ -42,7 +42,6 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
             }
 
             const data = await response.json()
-            console.log("dados do login: ", data);
 
             if(response.ok){
                 alert(data.mensagem || `Login bem sucedido!.`);
@@ -61,41 +60,50 @@ function LoginPage({onLoginSuccess}: LoginPageProps){
     }
 
     return(
-        <div className="container mt-5">
+        <main className="auth-page">
             <title>login</title>
-            <form onSubmit={handleSubmit}>
-                {erro && <div className="alert alert-danger">{erro}</div>}
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+            <section className="auth-card" aria-labelledby="login-title">
+                <header className="page-heading auth-heading">
+                    <span className="eyebrow">Sistema de atendimento</span>
+                    <h1 id="login-title">Acesse sua conta</h1>
+                    <p>Entre para abrir chamados ou acompanhar solicitações.</p>
+                </header>
+                <form onSubmit={handleSubmit} className="form-stack">
+                {erro && <div className="feedback feedback-error" role="alert">{erro}</div>}
+                <div className="field">
+                    <div>
+                        <label htmlFor="email">Email</label>
                         <input
-                            className="form-control"
+                            className="text-input"
                             type="text"
                             id="email" 
-                            placeholder="ex: 123@gmail.com"
+                            placeholder="seu@email.com"
+                            aria-label="Email"
                             value={inputEmailUser}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputEmailUser(e.target.value)}    
                         />
-                        <label htmlFor="email">Email</label>
                     </div>
                 </div>
-                <div className="row g-3 mb-3 d-flex justify-content-center">
-                    <div className="form-floating col-sm-5">
+                <div className="field">
+                    <div>
+                        <label htmlFor="senha">Senha</label>
                         <input
-                            className="form-control"
+                            className="text-input"
                             type="password"
                             id="senha"
-                            placeholder="ex: 12345"
+                            placeholder="Digite sua senha"
+                            aria-label="Senha"
                             value={inputSenha}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputSenha(e.target.value)}
                         />
-                        <label htmlFor="senha">Senha</label>
                     </div>
                 </div>
-                <div className="row g-3 d-flex justify-content-center mb-3">
-                    <button type="submit" className="btn btn-primary col-sm-3">entrar</button>
+                <div>
+                    <button type="submit" className="button button-primary button-full">Entrar</button>
                 </div>
             </form>
-        </div>
+            </section>
+        </main>
     )
 }
 
