@@ -33,7 +33,7 @@ function GerenciarChamados( {role}: adminPageProps ){
                 setCarregando(true); // Liga o loading antes de buscar
                 const token = localStorage.getItem('token');
 
-                const response = await fetch(`https://callsystem-production.up.railway.app/tickets`, {
+                const response = await fetch(`http://localhost:3000/tickets`, {
                     method: 'GET',
                     headers: { 
                         'content-type': 'application/json',
@@ -60,13 +60,15 @@ function GerenciarChamados( {role}: adminPageProps ){
     }, []);
 
     const mudarStatus = async (id: number) => {
+
         const token = localStorage.getItem('token');
+
         const ticketAtual = listaChamados.find(t => t.TICKETID === id);
         const statusParaEnviar = statusSelecionados[id] || ticketAtual?.STATUS || 'ABERTO';
 
         try {
             setIdAtualizando(id); // Ativa o loading específico deste botão/card
-            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
+            const response = await fetch(`http://localhost:3000/tickets/${id}`, {
                 method: "PUT",
                 headers: {
                     "content-type" : "application/json",
@@ -107,7 +109,7 @@ function GerenciarChamados( {role}: adminPageProps ){
             const token = localStorage.getItem('token');
 
             // Substitui o :id pelo número real do ticket na URL
-            const response = await fetch(`https://callsystem-production.up.railway.app/tickets/${id}`, {
+            const response = await fetch(`http://localhost:3000/tickets/${id}`, {
                 method: 'DELETE',
                 headers: { 
                     'content-type': 'application/json',
@@ -137,23 +139,32 @@ function GerenciarChamados( {role}: adminPageProps ){
                 <h1>Gerenciar chamados</h1>
                 <p>Atualize o andamento das solicitações ou remova chamados que não são mais necessários.</p>
             </header>
+
             {erro && <p className="feedback feedback-error" role="alert">{erro}</p>}
+
             <p className="permission-note">Somente o perfil {role} pode atualizar o status dos chamados.</p>
+
             {/* Se estiver carregando exibe o spinner */}
             {carregando ? (
+
                 <div className="loading-state" role="status">
                     <span className="loading-spinner" aria-hidden="true"></span>
                     <span>Carregando chamados...</span>
                 </div>
+
             ) : listaChamados.length === 0 && !erro ? (
+
                 <div className="empty-state">
                     <h2>Nenhum chamado encontrado</h2>
                     <p>Quando houver solicitações, elas aparecerão aqui para gerenciamento.</p>
                 </div>
+
             ) : (
                 <div className="ticket-list">
+                    
                     {listaChamados.map((ticket) => (
                         <article key={ticket.TICKETID} className="ticket-card">
+                            
                             <h2>{ticket.TITLE}</h2>
                             <p className="ticket-description">{ticket.DESCRIPTION}</p>
                             <div className="ticket-meta">

@@ -55,7 +55,7 @@ function ConsultarChamado() {
 
                 const token = localStorage.getItem('token');
 
-                const response = await fetch(`https://callsystem-production.up.railway.app/tickets`, {
+                const response = await fetch(`http://localhost:3000/tickets`, {
                     method: 'GET',
                     headers: { 
                         'content-type': 'application/json',

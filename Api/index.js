@@ -14,7 +14,7 @@ app.use(express.json());
 
 router(app);
 
-const PORT = 3036;
+const PORT = 3000;
 
 app.listen(PORT, '0.0.0.0', () => {
     try{

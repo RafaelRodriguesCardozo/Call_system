@@ -13,7 +13,7 @@ function RegisterPage(){
 
             const token = localStorage.getItem('token')
 
-            const response = await fetch(`https://callsystem-production.up.railway.app/register`, {
+            const response = await fetch(`http://localhost:3000/register`, {
                 method: 'POST',
                 headers: {
                     'content-type' : 'application/json',

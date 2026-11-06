@@ -24,7 +24,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
         const token = localStorage.getItem('token');
 
         try{
-            const response = await fetch(`https://callsystem-production.up.railway.app/register/${id}`, {
+            const response = await fetch(`http://localhost:3000/register/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'content-type' : 'application/json',
@@ -51,7 +51,7 @@ function ExcluirUsuarios({role}: adminPageProps ){
 
                 const token = localStorage.getItem('token');
 
-                const response = await fetch(`https://callsystem-production.up.railway.app/register`, {
+                const response = await fetch(`http://localhost:3000/register`, {
                     method: 'GET',
                     headers: {
                         'content-type' : 'application/json',
